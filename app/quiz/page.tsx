@@ -6,10 +6,10 @@ import { useQuizStore } from '@/store/quizStore'
 import type { QuizQuestion } from '@/types'
 
 const card: React.CSSProperties = {
-  background: '#fff',
-  border: '1px solid rgba(220,215,255,0.6)',
-  boxShadow: '0 2px 16px rgba(120,80,220,0.07)',
-  borderRadius: '20px',
+  background: 'rgba(255,255,255,0.92)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+  borderRadius: '22px',
   padding: '22px',
 }
 
@@ -58,25 +58,30 @@ export default function QuizPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
       {/* 진행 바 */}
-      <div style={{ ...card, padding: '14px 18px' }}>
+      <div style={{
+        background: 'rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255,255,255,0.25)',
+        borderRadius: '16px', padding: '14px 18px',
+      }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <span style={{
             fontSize: '12px', fontWeight: 700,
-            background: isSimilarMode ? '#fee2e2' : '#f5f3ff',
-            color: isSimilarMode ? '#b91c1c' : '#6d28d9',
-            padding: '3px 11px', borderRadius: '100px',
+            background: isSimilarMode ? 'rgba(255,140,35,0.25)' : 'rgba(255,255,255,0.2)',
+            color: isSimilarMode ? '#ffb800' : '#fff',
+            padding: '3px 12px', borderRadius: '100px',
           }}>
             {isSimilarMode ? '🔄 유사 문제' : `${currentIndex + 1} / ${questions.length}`}
           </span>
-          <span style={{ fontSize: '12px', fontWeight: 700, color: '#7c3aed' }}>{progress}%</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#ffec40' }}>{progress}%</span>
         </div>
-        <div style={{ height: '5px', background: '#f5f3ff', borderRadius: '100px', overflow: 'hidden' }}>
+        <div style={{ height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '100px', overflow: 'hidden' }}>
           <div style={{
             height: '100%', borderRadius: '100px',
-            background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
+            background: 'linear-gradient(90deg, #00d4ff, #ff3fa0, #ffb800)',
             width: `${progress}%`, transition: 'width 0.5s ease',
           }} />
         </div>
@@ -84,7 +89,7 @@ export default function QuizPage() {
 
       {/* 문제 카드 */}
       <div style={card}>
-        <p style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.75, margin: '0 0 18px', color: '#3b2d6e', textAlign: 'center' }}>
+        <p style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.75, margin: '0 0 18px', color: '#2d0a4e', textAlign: 'center' }}>
           {currentQuestion.question}
         </p>
 
@@ -92,17 +97,17 @@ export default function QuizPage() {
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedLabel === opt.label
             const isCorrect = opt.label === currentQuestion.correctLabel
-            let bg = '#fafafa'
-            let border = '1.5px solid #ede9fe'
-            let color = '#4c3a8a'
+            let bg = '#fdf8ff'
+            let border = '1.5px solid #e9d5ff'
+            let color = '#4a1080'
             let shadow = 'none'
 
             if (showFeedback) {
-              if (isCorrect) { bg = '#f0fdf4'; border = '2px solid #6ee7b7'; color = '#065f46'; shadow = '0 2px 8px rgba(16,185,129,0.12)' }
-              else if (isSelected) { bg = '#fef2f2'; border = '2px solid #fca5a5'; color = '#b91c1c' }
-              else { bg = '#fafafa'; color = '#d1c4e9'; border = '1.5px solid #f3f0ff' }
+              if (isCorrect) { bg = '#f0fdf4'; border = '2px solid #34d399'; color = '#065f46'; shadow = '0 2px 8px rgba(52,211,153,0.2)' }
+              else if (isSelected) { bg = '#fff1f2'; border = '2px solid #fda4af'; color = '#be123c' }
+              else { bg = '#fafafa'; color = '#d8b4fe'; border = '1.5px solid #f3e8ff' }
             } else if (isSelected) {
-              bg = '#f5f3ff'; border = '2px solid #7c3aed'; color = '#6d28d9'; shadow = '0 2px 10px rgba(124,58,237,0.12)'
+              bg = 'rgba(255,63,160,0.08)'; border = '2px solid #ff3fa0'; color = '#9d174d'; shadow = '0 2px 10px rgba(255,63,160,0.15)'
             }
 
             return (
@@ -116,8 +121,11 @@ export default function QuizPage() {
                 transition: 'all 0.15s', width: '100%',
               }}>
                 <span style={{
-                  width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
-                  background: showFeedback && isCorrect ? '#d1fae5' : showFeedback && isSelected ? '#fee2e2' : '#ede9fe',
+                  width: '27px', height: '27px', borderRadius: '50%', flexShrink: 0,
+                  background: showFeedback && isCorrect ? '#d1fae5'
+                    : showFeedback && isSelected ? '#ffe4e6'
+                    : isSelected ? 'rgba(255,63,160,0.15)'
+                    : '#f3e8ff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 800, fontSize: '11px', color,
                 }}>{opt.label}</span>
@@ -134,22 +142,28 @@ export default function QuizPage() {
       {showFeedback && lastAnswer && (
         <div style={{
           ...card,
-          background: lastAnswer.isCorrect ? '#f0fdf4' : '#fef2f2',
-          border: lastAnswer.isCorrect ? '1.5px solid #6ee7b7' : '1.5px solid #fca5a5',
+          background: lastAnswer.isCorrect ? 'rgba(240,253,244,0.97)' : 'rgba(255,241,242,0.97)',
+          border: lastAnswer.isCorrect ? '1.5px solid #6ee7b7' : '1.5px solid #fda4af',
         }}>
           <div style={{ textAlign: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '26px' }}>{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
-            <p style={{ margin: '5px 0 0', fontWeight: 800, fontSize: '17px', color: lastAnswer.isCorrect ? '#065f46' : '#b91c1c' }}>
+            <span style={{ fontSize: '28px' }}>{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
+            <p style={{
+              margin: '5px 0 0', fontWeight: 900, fontSize: '18px',
+              background: lastAnswer.isCorrect
+                ? 'linear-gradient(135deg, #059669, #10b981)'
+                : 'linear-gradient(135deg, #e11d48, #f43f5e)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            }}>
               {lastAnswer.isCorrect ? '정답!' : '오답'}
             </p>
           </div>
 
           <div style={{
             background: '#fff', borderRadius: '12px', padding: '13px',
-            fontSize: '13px', color: '#4c3a8a', lineHeight: 1.75, textAlign: 'left',
-            border: '1px solid #f3f0ff',
+            fontSize: '13px', color: '#4a1080', lineHeight: 1.75, textAlign: 'left',
+            border: '1px solid #f3e8ff',
           }}>
-            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#a78bfa', letterSpacing: '0.5px' }}>📖 해설</p>
+            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#c084fc', letterSpacing: '0.5px' }}>📖 해설</p>
             {currentQuestion.explanation}
           </div>
 
@@ -157,16 +171,17 @@ export default function QuizPage() {
             <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
               <button onClick={handleSimilar} disabled={loadingSimilar} style={{
                 flex: 1, padding: '12px', borderRadius: '12px',
-                background: loadingSimilar ? '#f9fafb' : '#fffbeb',
-                border: '1.5px solid #fde68a',
-                color: '#b45309', fontWeight: 700, fontSize: '13px',
+                background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #f59e0b, #f97316)',
+                border: 'none',
+                color: '#fff', fontWeight: 700, fontSize: '13px',
                 cursor: loadingSimilar ? 'not-allowed' : 'pointer',
+                boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(249,115,22,0.35)',
                 transition: 'all 0.2s',
               }}>{loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}</button>
               <button onClick={() => exitSimilarMode()} style={{
                 flex: 1, padding: '12px', borderRadius: '12px',
-                background: '#fafafa', border: '1.5px solid #e0d7ff',
-                color: '#7c3aed', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
+                background: '#fdf8ff', border: '1.5px solid #e9d5ff',
+                color: '#9333ea', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
               }}>⏭ 패스</button>
             </div>
           )}
@@ -174,10 +189,11 @@ export default function QuizPage() {
           {(lastAnswer.isCorrect || isSimilarMode) && (
             <button onClick={nextQuestion} style={{
               width: '100%', padding: '14px', marginTop: '12px', borderRadius: '12px',
-              background: 'linear-gradient(135deg, #7c3aed, #4f46e5)',
+              background: 'linear-gradient(135deg, #ff3fa0, #ff7c35, #ffb800)',
               border: 'none',
-              color: '#fff', fontWeight: 800, fontSize: '14px', cursor: 'pointer',
-              boxShadow: '0 4px 14px rgba(124,58,237,0.3)',
+              color: '#fff', fontWeight: 900, fontSize: '14px', cursor: 'pointer',
+              boxShadow: '0 4px 16px rgba(255,63,160,0.4)',
+              textShadow: '0 1px 4px rgba(0,0,0,0.1)',
             }}>
               {currentIndex + 1 >= questions.length && !isSimilarMode ? '결과 보기 →' : '다음 문제 →'}
             </button>

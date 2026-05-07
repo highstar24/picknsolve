@@ -7,17 +7,18 @@ import { validateFile } from '@/lib/extractText'
 import { hasRemaining, getRemainingCount, incrementCount, LIMIT } from '@/lib/rateLimit'
 import type { Difficulty, QuizQuestion } from '@/types'
 
-const DIFFICULTY_OPTIONS: { value: Difficulty; label: string; desc: string; activeColor: string; activeBg: string }[] = [
-  { value: 'easy',   label: '쉬움',   desc: '개념 확인', activeColor: '#059669', activeBg: '#d1fae5' },
-  { value: 'normal', label: '보통',   desc: '응용·이해', activeColor: '#d97706', activeBg: '#fef3c7' },
-  { value: 'hard',   label: '어려움', desc: '심화·추론', activeColor: '#dc2626', activeBg: '#fee2e2' },
+const DIFFICULTY_OPTIONS: { value: Difficulty; label: string; desc: string; color: string; bg: string; border: string }[] = [
+  { value: 'easy',   label: '쉬움',   desc: '개념 확인', color: '#00b4d8', bg: 'rgba(0,212,255,0.12)',  border: 'rgba(0,212,255,0.5)' },
+  { value: 'normal', label: '보통',   desc: '응용·이해', color: '#c026d3', bg: 'rgba(255,63,160,0.12)', border: 'rgba(255,63,160,0.5)' },
+  { value: 'hard',   label: '어려움', desc: '심화·추론', color: '#ea580c', bg: 'rgba(255,140,35,0.12)', border: 'rgba(255,140,35,0.5)' },
 ]
 
+/* 반투명 화이트 카드 */
 const card: React.CSSProperties = {
-  background: '#fff',
-  border: '1px solid rgba(220,215,255,0.6)',
-  boxShadow: '0 2px 16px rgba(120,80,220,0.07)',
-  borderRadius: '20px',
+  background: 'rgba(255,255,255,0.92)',
+  border: '1px solid rgba(255,255,255,0.7)',
+  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+  borderRadius: '22px',
   padding: '22px',
 }
 
@@ -82,60 +83,54 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
       {/* 히어로 */}
       <div style={{
         ...card,
-        background: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #2563eb 100%)',
-        border: 'none',
-        padding: '32px 24px',
+        background: 'rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255,255,255,0.25)',
+        padding: '28px 24px',
         textAlign: 'center',
-        position: 'relative',
-        overflow: 'hidden',
       }}>
-        {/* 카드 내부 블롭 장식 */}
-        <div style={{
-          position: 'absolute', top: '-30px', right: '-20px',
-          width: '140px', height: '140px',
-          background: 'rgba(255,255,255,0.08)',
-          borderRadius: '60% 40% 50% 50% / 40% 60% 40% 60%',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-20px', left: '-10px',
-          width: '100px', height: '100px',
-          background: 'rgba(255,255,255,0.06)',
-          borderRadius: '50% 60% 40% 50% / 60% 40% 60% 40%',
-        }} />
-        <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#fff', margin: '0 0 6px', letterSpacing: '-0.5px', position: 'relative' }}>
+        <h1 style={{
+          fontSize: '23px', fontWeight: 900, margin: '0 0 6px',
+          background: 'linear-gradient(135deg, #00d4ff 0%, #ff3fa0 55%, #ffb800 100%)',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          letterSpacing: '-0.5px',
+        }}>
           내 자료로 퀴즈 만들기
         </h1>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', margin: '0 0 16px', position: 'relative' }}>
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', margin: '0 0 14px' }}>
           텍스트 이미지 PDF를 올리면 문제가 생성돼요
         </p>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
-          background: 'rgba(255,255,255,0.18)',
+          background: 'rgba(255,255,255,0.15)',
+          border: '1px solid rgba(255,255,255,0.3)',
           borderRadius: '100px', padding: '5px 14px',
-          fontSize: '12px', fontWeight: 600, color: '#fff',
-          position: 'relative',
+          fontSize: '12px', fontWeight: 700, color: '#fff',
         }}>
-          📅 오늘 남은 횟수 <strong>{remaining}/{LIMIT}</strong>
+          📅 오늘 남은 횟수 <strong style={{ color: '#ffec40' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
         {/* 입력 방식 탭 */}
         <div style={card}>
-          <div style={{ display: 'flex', gap: '6px', background: '#f5f3ff', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', gap: '6px', background: 'rgba(120,0,200,0.07)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
             {(['text', 'file'] as const).map((t) => (
               <button key={t} type="button" onClick={() => setInputType(t)} style={{
-                flex: 1, padding: '8px', borderRadius: '9px', border: 'none',
+                flex: 1, padding: '9px', borderRadius: '9px', border: 'none',
                 fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-                background: inputType === t ? '#fff' : 'transparent',
-                color: inputType === t ? '#6d28d9' : '#a78bfa',
-                boxShadow: inputType === t ? '0 1px 6px rgba(109,40,217,0.12)' : 'none',
+                background: inputType === t
+                  ? 'linear-gradient(135deg, #c026d3, #ff3fa0)'
+                  : 'transparent',
+                color: inputType === t ? '#fff' : '#9b6ab0',
+                boxShadow: inputType === t ? '0 2px 10px rgba(192,38,211,0.3)' : 'none',
                 transition: 'all 0.2s',
               }}>
                 {t === 'text' ? '✏️ 텍스트 입력' : '📎 파일 업로드'}
@@ -150,28 +145,28 @@ export default function HomePage() {
                 maxLength={10000}
                 style={{
                   width: '100%', height: '148px', padding: '13px',
-                  background: '#fafafa', border: '1.5px solid #ede9fe',
+                  background: '#fdf8ff', border: '1.5px solid #e9d5ff',
                   borderRadius: '12px', fontSize: '14px', resize: 'none', outline: 'none',
-                  lineHeight: 1.6, color: '#3b2d6e',
+                  lineHeight: 1.6, color: '#2d0a4e',
                   transition: 'border-color 0.2s',
                 }}
-                onFocus={e => e.target.style.borderColor = '#7c3aed'}
-                onBlur={e => e.target.style.borderColor = '#ede9fe'}
+                onFocus={e => e.target.style.borderColor = '#c026d3'}
+                onBlur={e => e.target.style.borderColor = '#e9d5ff'}
               />
-              <div style={{ textAlign: 'right', fontSize: '11px', color: '#c4b5fd', marginTop: '5px' }}>
+              <div style={{ textAlign: 'right', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
                 {text.length.toLocaleString()} / 10,000
               </div>
             </>
           ) : (
             <>
               <div onClick={() => fileRef.current?.click()} style={{
-                border: `2px dashed ${file ? '#6ee7b7' : '#c4b5fd'}`,
+                border: `2px dashed ${file ? '#6ee7b7' : '#d8b4fe'}`,
                 borderRadius: '14px', padding: '32px 20px', cursor: 'pointer',
-                background: file ? '#f0fdf4' : '#fafafa',
+                background: file ? '#f0fdf4' : '#fdf8ff',
                 textAlign: 'center', transition: 'all 0.2s',
               }}
-                onMouseEnter={e => { if (!file) e.currentTarget.style.borderColor = '#7c3aed' }}
-                onMouseLeave={e => { if (!file) e.currentTarget.style.borderColor = '#c4b5fd' }}
+                onMouseEnter={e => { if (!file) e.currentTarget.style.borderColor = '#c026d3' }}
+                onMouseLeave={e => { if (!file) e.currentTarget.style.borderColor = '#d8b4fe' }}
               >
                 {file ? (
                   <>
@@ -182,8 +177,8 @@ export default function HomePage() {
                 ) : (
                   <>
                     <div style={{ fontSize: '28px' }}>🌸</div>
-                    <div style={{ fontWeight: 700, color: '#7c3aed', marginTop: '8px', fontSize: '14px' }}>클릭하여 파일 선택</div>
-                    <div style={{ fontSize: '12px', color: '#a78bfa', marginTop: '4px' }}>JPG · PNG · WEBP · PDF · TXT (10MB 이하)</div>
+                    <div style={{ fontWeight: 700, color: '#9333ea', marginTop: '8px', fontSize: '14px' }}>클릭하여 파일 선택</div>
+                    <div style={{ fontSize: '12px', color: '#c084fc', marginTop: '4px' }}>JPG · PNG · WEBP · PDF · TXT (10MB 이하)</div>
                   </>
                 )}
               </div>
@@ -195,18 +190,18 @@ export default function HomePage() {
 
         {/* 난이도 */}
         <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6d28d9' }}>난이도 선택</p>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>난이도 선택</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
             {DIFFICULTY_OPTIONS.map((opt) => {
               const active = difficulty === opt.value
               return (
                 <button key={opt.value} type="button" onClick={() => setDifficulty(opt.value)} style={{
                   padding: '14px 6px', borderRadius: '13px', cursor: 'pointer',
-                  border: `2px solid ${active ? opt.activeColor + '40' : '#ede9fe'}`,
-                  background: active ? opt.activeBg : '#fafafa',
+                  border: `2px solid ${active ? opt.border : 'transparent'}`,
+                  background: active ? opt.bg : 'rgba(245,240,255,0.8)',
                   fontWeight: 700, fontSize: '13px',
-                  color: active ? opt.activeColor : '#a78bfa',
-                  boxShadow: active ? `0 4px 12px ${opt.activeColor}1a` : 'none',
+                  color: active ? opt.color : '#a78bfa',
+                  boxShadow: active ? `0 4px 14px ${opt.border.replace('0.5)', '0.25)')}` : 'none',
                   transition: 'all 0.2s',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
                 }}>
@@ -221,43 +216,48 @@ export default function HomePage() {
         {/* 문항 수 */}
         <div style={card}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: '8px', marginBottom: '12px' }}>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#6d28d9' }}>문항 수</p>
-            <span style={{ fontSize: '32px', fontWeight: 900, color: '#7c3aed', letterSpacing: '-1.5px', lineHeight: 1 }}>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>문항 수</p>
+            <span style={{
+              fontSize: '34px', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1,
+              background: 'linear-gradient(135deg, #c026d3, #ff3fa0)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            }}>
               {count}
             </span>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#c4b5fd' }}>문항</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: '#c084fc' }}>문항</span>
           </div>
           <input type="range" min={1} max={20} value={count} onChange={(e) => setCount(Number(e.target.value))}
             style={{ width: '100%' }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#c4b5fd', marginTop: '5px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
             <span>1</span><span>10</span><span>20</span>
           </div>
         </div>
 
         {error && (
           <div style={{
-            background: '#fef2f2', border: '1.5px solid #fecaca',
+            background: 'rgba(255,255,255,0.9)', border: '1.5px solid #fca5a5',
             borderRadius: '12px', padding: '11px 16px', fontSize: '13px', color: '#b91c1c', textAlign: 'center',
           }}>{error}</div>
         )}
 
         <button type="submit" disabled={loading || remaining === 0} style={{
-          width: '100%', padding: '17px',
+          width: '100%', padding: '18px',
           background: loading || remaining === 0
-            ? '#f3f4f6'
-            : 'linear-gradient(135deg, #7c3aed, #4f46e5)',
-          color: loading || remaining === 0 ? '#9ca3af' : '#fff',
+            ? 'rgba(255,255,255,0.25)'
+            : 'linear-gradient(135deg, #ff3fa0 0%, #ff7c35 60%, #ffb800 100%)',
+          color: loading || remaining === 0 ? 'rgba(255,255,255,0.5)' : '#fff',
           border: 'none',
-          borderRadius: '14px', fontWeight: 800, fontSize: '15px',
+          borderRadius: '16px', fontWeight: 900, fontSize: '16px',
           cursor: loading || remaining === 0 ? 'not-allowed' : 'pointer',
           letterSpacing: '-0.3px',
-          boxShadow: loading || remaining === 0 ? 'none' : '0 6px 20px rgba(124,58,237,0.35)',
+          boxShadow: loading || remaining === 0 ? 'none' : '0 8px 24px rgba(255,63,160,0.45)',
           transition: 'all 0.2s',
+          textShadow: '0 1px 4px rgba(0,0,0,0.15)',
         }}>
           {loading ? '⏳ 문제 생성 중...' : '✨ 문제 생성하기'}
         </button>
 
-        <p style={{ fontSize: '11px', color: '#c4b5fd', margin: 0, textAlign: 'center' }}>
+        <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)', margin: 0, textAlign: 'center' }}>
           PDF 20페이지 이하 · 파일 10MB 이하 권장
         </p>
       </form>
