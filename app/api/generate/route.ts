@@ -81,6 +81,7 @@ function buildQuizPrompt(difficulty: Difficulty, count: number): string {
 1. 반드시 JSON 배열 형식으로만 응답 (다른 텍스트 없이)
 2. 보기는 A~E 5개, 정답은 correctLabel에 'A'~'E' 중 하나
 3. explanation은 정답 근거 + 오답 이유를 난이도에 맞게 설명
+4. 문제·보기·해설은 반드시 학습 자료와 동일한 언어로 작성
 
 응답 형식:
 [
@@ -105,6 +106,7 @@ function buildSimilarPrompt(originalQuestion: string, difficulty: Difficulty, so
 
 원래 문제: ${originalQuestion}
 난이도: ${DIFFICULTY_PROMPT[difficulty]}
+언어: 원래 문제와 동일한 언어로 작성
 
 반드시 JSON 객체 형식으로만 응답 (배열 아님, 다른 텍스트 없이):
 {

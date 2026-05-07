@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
 
 원래 문제: ${originalQuestion}
 난이도: ${DIFFICULTY_PROMPT[difficulty as Difficulty]}
+언어: 원래 문제와 동일한 언어로 작성
 
 반드시 JSON 객체 형식으로만 응답 (배열 아님, 다른 텍스트 없이):
 {
