@@ -96,23 +96,24 @@ export default function HomePage() {
         padding: '28px 24px',
         textAlign: 'center',
       }}>
-        <h1 style={{ margin: '0 0 10px', lineHeight: 1.25 }}>
+        <h1 style={{ margin: '0 0 10px', lineHeight: 1.2 }}>
           <span style={{
             display: 'block',
-            fontSize: '15px', fontWeight: 600,
-            color: 'rgba(255,255,255,0.7)',
-            letterSpacing: '0.5px',
-            marginBottom: '4px',
+            fontSize: '20px', fontWeight: 900,
+            color: '#fff',
+            letterSpacing: '-0.3px',
+            marginBottom: '2px',
+            textShadow: '0 2px 8px rgba(0,0,0,0.2)',
           }}>
             {t.heroTitle}
           </span>
           <span style={{
             display: 'block',
-            fontSize: '32px', fontWeight: 900,
-            background: 'linear-gradient(135deg, #00d4ff 0%, #ff3fa0 50%, #ffb800 100%)',
+            fontSize: '34px', fontWeight: 900,
+            background: 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 60%, #FFE2B8 100%)',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             letterSpacing: '-1px',
-            filter: 'drop-shadow(0 2px 12px rgba(255,63,160,0.4))',
+            filter: 'drop-shadow(0 2px 16px rgba(255,127,66,0.5))',
           }}>
             {t.heroTitleAccent}
           </span>
@@ -127,7 +128,7 @@ export default function HomePage() {
           borderRadius: '100px', padding: '5px 14px',
           fontSize: '12px', fontWeight: 700, color: '#fff',
         }}>
-          📝 {t.remainingLabel} <strong style={{ color: '#ffec40' }}>{remaining}/{LIMIT}</strong>
+          📝 {t.remainingLabel} <strong style={{ color: '#FFAF24' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 
@@ -168,9 +169,9 @@ export default function HomePage() {
               <button key={tp} type="button" onClick={() => setInputType(tp)} style={{
                 flex: 1, padding: '9px', borderRadius: '9px', border: 'none',
                 fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-                background: inputType === tp ? 'linear-gradient(135deg, #c026d3, #ff3fa0)' : 'transparent',
-                color: inputType === tp ? '#fff' : '#9b6ab0',
-                boxShadow: inputType === tp ? '0 2px 10px rgba(192,38,211,0.3)' : 'none',
+                background: inputType === tp ? 'linear-gradient(135deg, #FF7F42, #FFAF24)' : 'transparent',
+                color: inputType === tp ? '#fff' : '#AC87CD',
+                boxShadow: inputType === tp ? '0 2px 10px rgba(255,127,66,0.35)' : 'none',
                 transition: 'all 0.2s',
               }}>
                 {tp === 'text' ? t.tabText : t.tabFile}
@@ -189,7 +190,7 @@ export default function HomePage() {
                   borderRadius: '12px', fontSize: '14px', resize: 'none', outline: 'none',
                   lineHeight: 1.6, color: '#2d0a4e', transition: 'border-color 0.2s',
                 }}
-                onFocus={e => e.target.style.borderColor = '#c026d3'}
+                onFocus={e => e.target.style.borderColor = '#FF7F42'}
                 onBlur={e => e.target.style.borderColor = '#e9d5ff'}
               />
               <div style={{ textAlign: 'right', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
@@ -260,7 +261,7 @@ export default function HomePage() {
             <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.questionCountTitle}</p>
             <span style={{
               fontSize: '34px', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1,
-              background: 'linear-gradient(135deg, #c026d3, #ff3fa0)',
+              background: 'linear-gradient(135deg, #FF7F42, #FFAF24)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
               {count}
@@ -285,13 +286,13 @@ export default function HomePage() {
           width: '100%', padding: '18px',
           background: loading || remaining === 0
             ? 'rgba(255,255,255,0.25)'
-            : 'linear-gradient(135deg, #ff3fa0 0%, #ff7c35 60%, #ffb800 100%)',
+            : 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 100%)',
           color: loading || remaining === 0 ? 'rgba(255,255,255,0.5)' : '#fff',
           border: 'none',
           borderRadius: '16px', fontWeight: 900, fontSize: '16px',
           cursor: loading || remaining === 0 ? 'not-allowed' : 'pointer',
           letterSpacing: '-0.3px',
-          boxShadow: loading || remaining === 0 ? 'none' : '0 8px 24px rgba(255,63,160,0.45)',
+          boxShadow: loading || remaining === 0 ? 'none' : '0 8px 24px rgba(255,127,66,0.45)',
           transition: 'all 0.2s',
           textShadow: '0 1px 4px rgba(0,0,0,0.15)',
         }}>

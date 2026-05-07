@@ -4,7 +4,7 @@
 
 body {
   min-height: 100vh;
-  background: linear-gradient(145deg, #7c10b8 0%, #9d2ae8 40%, #6a0fa0 100%);
+  background: linear-gradient(145deg, #3d1f50 0%, #724784 50%, #4a2860 100%);
   background-attachment: fixed;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -12,7 +12,7 @@ body {
 }
 
 input[type="range"] {
-  accent-color: #ff3fa0;
+  accent-color: #FF7F42;
   height: 4px;
   cursor: pointer;
 }

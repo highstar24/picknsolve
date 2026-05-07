@@ -91,7 +91,7 @@ export default function QuizPage() {
         <div style={{ height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '100px', overflow: 'hidden' }}>
           <div style={{
             height: '100%', borderRadius: '100px',
-            background: 'linear-gradient(90deg, #00d4ff, #ff3fa0, #ffb800)',
+            background: 'linear-gradient(90deg, #FF7F42, #FFAF24)',
             width: `${progress}%`, transition: 'width 0.5s ease',
           }} />
         </div>
@@ -117,7 +117,7 @@ export default function QuizPage() {
               else if (isSelected) { bg = '#fff1f2'; border = '2px solid #fda4af'; color = '#be123c' }
               else { bg = '#fafafa'; color = '#d8b4fe'; border = '1.5px solid #f3e8ff' }
             } else if (isSelected) {
-              bg = 'rgba(255,63,160,0.08)'; border = '2px solid #ff3fa0'; color = '#9d174d'; shadow = '0 2px 10px rgba(255,63,160,0.15)'
+              bg = 'rgba(255,127,66,0.08)'; border = '2px solid #FF7F42'; color = '#7c2d12'; shadow = '0 2px 10px rgba(255,127,66,0.2)'
             }
 
             return (
@@ -134,7 +134,7 @@ export default function QuizPage() {
                   width: '27px', height: '27px', borderRadius: '50%', flexShrink: 0,
                   background: showFeedback && isCorrect ? '#d1fae5'
                     : showFeedback && isSelected ? '#ffe4e6'
-                    : isSelected ? 'rgba(255,63,160,0.15)'
+                    : isSelected ? 'rgba(255,127,66,0.15)'
                     : '#f3e8ff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 800, fontSize: '11px', color,
@@ -191,11 +191,11 @@ export default function QuizPage() {
               ) : (
                 <button onClick={handleSimilar} disabled={loadingSimilar} style={{
                   flex: 1, padding: '12px', borderRadius: '12px',
-                  background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #f59e0b, #f97316)',
+                  background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #FF7F42, #FFAF24)',
                   border: 'none',
                   color: '#fff', fontWeight: 700, fontSize: '13px',
                   cursor: loadingSimilar ? 'not-allowed' : 'pointer',
-                  boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(249,115,22,0.35)',
+                  boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(255,127,66,0.35)',
                   transition: 'all 0.2s',
                 }}>{loadingSimilar ? t.similarLoading : t.similarBtn}</button>
               )}
@@ -210,10 +210,10 @@ export default function QuizPage() {
           {(lastAnswer.isCorrect || isSimilarMode) && (
             <button onClick={nextQuestion} style={{
               width: '100%', padding: '14px', marginTop: '12px', borderRadius: '12px',
-              background: 'linear-gradient(135deg, #ff3fa0, #ff7c35, #ffb800)',
+              background: 'linear-gradient(135deg, #FF7F42, #FFAF24)',
               border: 'none',
               color: '#fff', fontWeight: 900, fontSize: '14px', cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(255,63,160,0.4)',
+              boxShadow: '0 4px 16px rgba(255,127,66,0.4)',
               textShadow: '0 1px 4px rgba(0,0,0,0.1)',
             }}>
               {currentIndex + 1 >= questions.length && !isSimilarMode ? t.resultBtn : t.nextBtn}

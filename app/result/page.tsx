@@ -17,10 +17,10 @@ const card: React.CSSProperties = {
 }
 
 const SCORE_CONFIG = [
-  { min: 90, emoji: '🏆', from: '#00d4ff', mid: '#a855f7', to: '#ff3fa0' },
-  { min: 70, emoji: '🎉', from: '#ff3fa0', mid: '#f97316', to: '#ffb800' },
-  { min: 50, emoji: '💪', from: '#f97316', mid: '#fb923c', to: '#fbbf24' },
-  { min: 0,  emoji: '📖', from: '#f43f5e', mid: '#ec4899', to: '#fb7185' },
+  { min: 90, emoji: '🏆', from: '#FFAF24', mid: '#FF7F42', to: '#FFE2B8' },
+  { min: 70, emoji: '🎉', from: '#FF7F42', mid: '#FFAF24', to: '#f97316' },
+  { min: 50, emoji: '💪', from: '#AC87CD', mid: '#724784', to: '#9333ea' },
+  { min: 0,  emoji: '📖', from: '#e11d48', mid: '#f43f5e', to: '#fb7185' },
 ]
 
 export default function ResultPage() {
@@ -83,7 +83,7 @@ export default function ResultPage() {
           }}>
             오늘도 한걸음<br />
             <span style={{
-              background: 'linear-gradient(135deg, #00d4ff, #ff3fa0, #ffb800)',
+              background: 'linear-gradient(135deg, #FF7F42, #FFAF24, #FFE2B8)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
               성장하셨습니다
@@ -202,11 +202,11 @@ export default function ResultPage() {
 
         <button onClick={() => { reset(); router.push('/') }} style={{
           width: '100%', padding: '18px', marginBottom: '32px',
-          background: 'linear-gradient(135deg, #ff3fa0 0%, #ff7c35 60%, #ffb800 100%)',
+          background: 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 100%)',
           border: 'none',
           borderRadius: '16px', color: '#fff', fontWeight: 900,
           fontSize: '16px', cursor: 'pointer',
-          boxShadow: '0 8px 24px rgba(255,63,160,0.45)',
+          boxShadow: '0 8px 24px rgba(255,127,66,0.45)',
           textShadow: '0 1px 4px rgba(0,0,0,0.1)',
         }}>
           {t.retryBtn}

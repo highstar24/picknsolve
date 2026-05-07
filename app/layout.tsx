@@ -13,35 +13,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {/* 배경 블롭 장식 */}
         <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          {/* 시안 블롭 - 우상단 */}
+          {/* 오렌지 블롭 - 우상단 */}
           <div style={{
             position: 'absolute', top: '-60px', right: '-40px',
-            width: '320px', height: '320px',
-            background: 'radial-gradient(ellipse, rgba(0,212,255,0.35) 0%, rgba(0,180,230,0.1) 55%, transparent 70%)',
+            width: '300px', height: '300px',
+            background: 'radial-gradient(ellipse, rgba(255,127,66,0.28) 0%, rgba(255,175,36,0.08) 55%, transparent 70%)',
             borderRadius: '60% 40% 55% 45% / 45% 60% 40% 55%',
-            filter: 'blur(1px)',
+            filter: 'blur(2px)',
           }} />
-          {/* 핫핑크 블롭 - 좌중단 */}
+          {/* 라이트퍼플 블롭 - 좌중단 */}
           <div style={{
             position: 'absolute', top: '30%', left: '-50px',
-            width: '280px', height: '280px',
-            background: 'radial-gradient(ellipse, rgba(255,63,160,0.3) 0%, rgba(230,40,140,0.08) 55%, transparent 70%)',
+            width: '260px', height: '260px',
+            background: 'radial-gradient(ellipse, rgba(172,135,205,0.25) 0%, rgba(172,135,205,0.06) 55%, transparent 70%)',
             borderRadius: '45% 55% 40% 60% / 55% 40% 60% 45%',
-            filter: 'blur(1px)',
+            filter: 'blur(2px)',
           }} />
-          {/* 오렌지 블롭 - 우하단 */}
+          {/* 옐로우 블롭 - 우하단 */}
           <div style={{
             position: 'absolute', bottom: '-40px', right: '-20px',
-            width: '260px', height: '260px',
-            background: 'radial-gradient(ellipse, rgba(255,140,35,0.3) 0%, rgba(255,100,20,0.08) 55%, transparent 70%)',
+            width: '240px', height: '240px',
+            background: 'radial-gradient(ellipse, rgba(255,175,36,0.22) 0%, rgba(255,127,66,0.06) 55%, transparent 70%)',
             borderRadius: '50% 60% 45% 55% / 60% 45% 55% 40%',
-            filter: 'blur(1px)',
+            filter: 'blur(2px)',
           }} />
-          {/* 노랑 소블롭 - 좌하단 */}
+          {/* 피치 소블롭 - 좌하단 */}
           <div style={{
             position: 'absolute', bottom: '15%', left: '5%',
             width: '160px', height: '160px',
-            background: 'radial-gradient(ellipse, rgba(255,200,0,0.22) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse, rgba(255,226,184,0.18) 0%, transparent 65%)',
             borderRadius: '55% 45% 50% 50% / 50% 55% 45% 50%',
           }} />
         </div>
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* 헤더 */}
         <header style={{
           position: 'sticky', top: 0, zIndex: 10,
-          background: 'rgba(100,15,160,0.6)',
+          background: 'rgba(61,31,80,0.75)',
           backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(255,255,255,0.15)',
           height: '52px', padding: '0 20px',
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{
               fontSize: '18px', fontWeight: 900, letterSpacing: '-0.5px',
-              background: 'linear-gradient(135deg, #00d4ff, #ff3fa0, #ff8c35)',
+              background: 'linear-gradient(135deg, #FFE2B8, #FF7F42, #FFAF24)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
               Pick & Solve
