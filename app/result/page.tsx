@@ -66,7 +66,7 @@ export default function ResultPage() {
             position: 'fixed', inset: 0, zIndex: 1000,
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(12,32,48,0.65)',
+            background: 'rgba(220,62,38,0.55)',
             backdropFilter: 'blur(6px)',
             cursor: 'pointer',
             animation: 'fadeIn 0.4s ease',

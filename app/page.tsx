@@ -88,47 +88,43 @@ export default function HomePage() {
 
       {/* 히어로 */}
       <div style={{
-        ...card,
-        background: 'rgba(255,255,255,0.15)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.25)',
+        background: 'linear-gradient(135deg, #DC3E26 0%, #e8762a 50%, #EDCD44 100%)',
+        borderRadius: '22px',
         padding: '28px 24px',
         textAlign: 'center',
+        boxShadow: '0 8px 32px rgba(220,62,38,0.25)',
       }}>
         <h1 style={{ margin: '0 0 10px', lineHeight: 1.2 }}>
           <span style={{
             display: 'block',
             fontSize: '20px', fontWeight: 900,
-            color: '#fff',
+            color: 'rgba(255,255,255,0.9)',
             letterSpacing: '-0.3px',
             marginBottom: '2px',
-            textShadow: '0 2px 8px rgba(0,0,0,0.2)',
           }}>
             {t.heroTitle}
           </span>
           <span style={{
             display: 'block',
             fontSize: '34px', fontWeight: 900,
-            background: 'linear-gradient(135deg, #DC3E26 0%, #EDCD44 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            color: '#fff',
             letterSpacing: '-1px',
-            filter: 'drop-shadow(0 2px 16px rgba(220,62,38,0.5))',
+            textShadow: '0 2px 12px rgba(0,0,0,0.15)',
           }}>
             {t.heroTitleAccent}
           </span>
         </h1>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.85)', margin: '0 0 14px', fontWeight: 500 }}>
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.88)', margin: '0 0 14px', fontWeight: 500 }}>
           {t.heroDesc}
         </p>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
-          background: 'rgba(255,255,255,0.15)',
-          border: '1px solid rgba(255,255,255,0.3)',
+          background: 'rgba(255,255,255,0.25)',
+          border: '1px solid rgba(255,255,255,0.4)',
           borderRadius: '100px', padding: '5px 14px',
           fontSize: '12px', fontWeight: 700, color: '#fff',
         }}>
-          📝 {t.remainingLabel} <strong style={{ color: '#EDCD44' }}>{remaining}/{LIMIT}</strong>
+          📝 {t.remainingLabel} <strong style={{ color: '#fff' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 

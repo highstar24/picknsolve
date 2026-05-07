@@ -72,23 +72,23 @@ export default function QuizPage() {
 
       {/* 진행 바 */}
       <div style={{
-        background: 'rgba(255,255,255,0.15)',
-        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.25)',
+        background: 'rgba(255,255,255,0.85)',
+        border: '1px solid rgba(220,62,38,0.15)',
         borderRadius: '16px', padding: '14px 18px',
+        boxShadow: '0 2px 12px rgba(220,62,38,0.08)',
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <span style={{
             fontSize: '12px', fontWeight: 700,
-            background: isSimilarMode ? 'rgba(237,205,68,0.25)' : 'rgba(255,255,255,0.2)',
-            color: isSimilarMode ? '#EDCD44' : '#fff',
+            background: isSimilarMode ? 'rgba(237,205,68,0.3)' : 'rgba(220,62,38,0.1)',
+            color: isSimilarMode ? '#9a8500' : '#DC3E26',
             padding: '3px 12px', borderRadius: '100px',
           }}>
             {isSimilarMode ? t.similarMode : `${currentIndex + 1} / ${questions.length}`}
           </span>
-          <span style={{ fontSize: '12px', fontWeight: 800, color: '#EDCD44' }}>{progress}%</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#DC3E26' }}>{progress}%</span>
         </div>
-        <div style={{ height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '100px', overflow: 'hidden' }}>
+        <div style={{ height: '6px', background: 'rgba(220,62,38,0.12)', borderRadius: '100px', overflow: 'hidden' }}>
           <div style={{
             height: '100%', borderRadius: '100px',
             background: 'linear-gradient(90deg, #DC3E26, #EDCD44)',

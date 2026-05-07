@@ -32,9 +32,9 @@ export default function LangSelector() {
             transition: 'all 0.15s',
             background: uiLang === lang
               ? 'linear-gradient(135deg, #DC3E26, #EDCD44)'
-              : 'rgba(255,255,255,0.15)',
-            color: uiLang === lang ? '#fff' : 'rgba(255,255,255,0.6)',
-            boxShadow: uiLang === lang ? '0 2px 8px rgba(220,62,38,0.4)' : 'none',
+              : 'rgba(220,62,38,0.08)',
+            color: uiLang === lang ? '#fff' : '#DC3E26',
+            boxShadow: uiLang === lang ? '0 2px 8px rgba(220,62,38,0.35)' : 'none',
           }}
         >
           {LANG_LABELS[lang]}
