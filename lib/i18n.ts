@@ -10,7 +10,8 @@ export const LANG_LABELS: Record<UiLang, string> = {
 export const T = {
   KR: {
     appSubtitle: 'AI 퀴즈',
-    heroTitle: '내 자료로 퀴즈 만들기',
+    heroTitle: '내 자료로',
+    heroTitleAccent: '퀴즈 만들기',
     heroDesc: '텍스트 · 이미지 · PDF를 올리면 문제가 생성돼요',
     remainingLabel: '오늘 문제 생성 횟수',
     tabText: '✏️ 텍스트 입력',
@@ -55,7 +56,8 @@ export const T = {
   },
   EN: {
     appSubtitle: 'AI Quiz',
-    heroTitle: 'Create Quiz from My Materials',
+    heroTitle: 'Create Quiz',
+    heroTitleAccent: 'from My Materials',
     heroDesc: 'Upload text, image, or PDF to generate questions',
     remainingLabel: "Today's Generations",
     tabText: '✏️ Text Input',
@@ -100,7 +102,8 @@ export const T = {
   },
   ZH: {
     appSubtitle: 'AI 测验',
-    heroTitle: '用我的资料生成测验',
+    heroTitle: '用我的资料',
+    heroTitleAccent: '生成测验',
     heroDesc: '上传文字、图片或PDF即可生成题目',
     remainingLabel: '今日生成次数',
     tabText: '✏️ 文字输入',

@@ -96,18 +96,27 @@ export default function HomePage() {
         padding: '28px 24px',
         textAlign: 'center',
       }}>
-        <h1 style={{
-          fontSize: '23px', fontWeight: 900, margin: '0 0 6px',
-          color: '#fff', letterSpacing: '-0.5px',
-          textShadow: '0 2px 12px rgba(0,0,0,0.2)',
-        }}>
-          {t.heroTitle}
+        <h1 style={{ margin: '0 0 10px', lineHeight: 1.25 }}>
+          <span style={{
+            display: 'block',
+            fontSize: '15px', fontWeight: 600,
+            color: 'rgba(255,255,255,0.7)',
+            letterSpacing: '0.5px',
+            marginBottom: '4px',
+          }}>
+            {t.heroTitle}
+          </span>
+          <span style={{
+            display: 'block',
+            fontSize: '32px', fontWeight: 900,
+            background: 'linear-gradient(135deg, #00d4ff 0%, #ff3fa0 50%, #ffb800 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            letterSpacing: '-1px',
+            filter: 'drop-shadow(0 2px 12px rgba(255,63,160,0.4))',
+          }}>
+            {t.heroTitleAccent}
+          </span>
         </h1>
-        <div style={{
-          width: '80px', height: '3px', margin: '0 auto 10px',
-          background: 'linear-gradient(90deg, #00d4ff, #ff3fa0, #ffb800)',
-          borderRadius: '100px',
-        }} />
         <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.85)', margin: '0 0 14px', fontWeight: 500 }}>
           {t.heroDesc}
         </p>
