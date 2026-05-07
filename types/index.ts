@@ -1,4 +1,5 @@
 export type Difficulty = 'easy' | 'normal' | 'hard'
+export type { UiLang, QuizLangMode } from '@/lib/i18n'
 
 export interface QuizOption {
   label: string // 'A' | 'B' | 'C' | 'D' | 'E'

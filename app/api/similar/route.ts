@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { LANG_NAME_FOR_PROMPT } from '@/lib/i18n'
 import type { Difficulty } from '@/types'
+import type { UiLang, QuizLangMode } from '@/lib/i18n'
 
 const DIFFICULTY_PROMPT: Record<Difficulty, string> = {
   easy: '초등학생도 이해할 수 있는 기본 개념 확인 수준',
@@ -11,9 +13,9 @@ const DIFFICULTY_PROMPT: Record<Difficulty, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { originalQuestion, difficulty, sourceText } = body
+    const { originalQuestion, difficulty, sourceText, quizLangMode, uiLang } = body
 
-    if (!originalQuestion || !difficulty || !sourceText) {
+    if (!originalQuestion || !difficulty) {
       return NextResponse.json({ error: '필수 파라미터가 없습니다.' }, { status: 400 })
     }
 
@@ -22,6 +24,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'API 키가 설정되지 않았습니다.' }, { status: 500 })
     }
 
+    const mode: QuizLangMode = quizLangMode === 'translate' ? 'translate' : 'source'
+    const lang: UiLang = ['KR', 'EN', 'ZH'].includes(uiLang) ? uiLang : 'KR'
+
+    const langRule = mode === 'translate'
+      ? `언어: 문제·해설은 ${LANG_NAME_FOR_PROMPT[lang]}로, 보기는 원래 문제와 동일한 언어로 작성`
+      : `언어: 원래 문제와 동일한 언어로 작성`
+
     const genAI = new GoogleGenerativeAI(apiKey)
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' })
 
@@ -29,7 +38,7 @@ export async function POST(req: NextRequest) {
 
 원래 문제: ${originalQuestion}
 난이도: ${DIFFICULTY_PROMPT[difficulty as Difficulty]}
-언어: 원래 문제와 동일한 언어로 작성
+${langRule}
 
 반드시 JSON 객체 형식으로만 응답 (배열 아님, 다른 텍스트 없이):
 {
@@ -47,7 +56,7 @@ export async function POST(req: NextRequest) {
 }
 
 참고 학습 자료:
-${String(sourceText).slice(0, 2000)}`
+${String(sourceText ?? '').slice(0, 2000)}`
 
     const result = await model.generateContent(prompt)
     const raw = result.response.text().trim()

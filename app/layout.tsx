@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import LangSelector from '@/components/LangSelector'
 
 export const metadata: Metadata = {
   title: '픽앤솔브 | AI 퀴즈 생성',
@@ -52,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(255,255,255,0.15)',
           height: '52px', padding: '0 20px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{
@@ -62,12 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }}>
               Pick & Solve
             </span>
-            <span style={{
-              fontSize: '10px', color: 'rgba(255,255,255,0.6)', fontWeight: 600,
-              background: 'rgba(255,255,255,0.12)', borderRadius: '100px',
-              padding: '2px 8px',
-            }}>AI 퀴즈</span>
           </a>
+          <LangSelector />
         </header>
 
         <main style={{ maxWidth: '520px', margin: '0 auto', padding: '20px 14px', position: 'relative', zIndex: 1 }}>

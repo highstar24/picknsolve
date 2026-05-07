@@ -1,7 +1,16 @@
 import { create } from 'zustand'
 import type { QuizQuestion, QuizConfig, QuizAnswer, Difficulty } from '@/types'
+import type { UiLang, QuizLangMode } from '@/lib/i18n'
 
 interface QuizStore {
+  // UI 언어 (KR/EN/ZH)
+  uiLang: UiLang
+  setUiLang: (lang: UiLang) => void
+
+  // 문제 언어 모드
+  quizLangMode: QuizLangMode
+  setQuizLangMode: (mode: QuizLangMode) => void
+
   // 세션 데이터
   questions: QuizQuestion[]
   config: QuizConfig
@@ -32,7 +41,21 @@ interface QuizStore {
 
 const DEFAULT_CONFIG: QuizConfig = { difficulty: 'normal', count: 5 }
 
+function loadUiLang(): UiLang {
+  if (typeof window === 'undefined') return 'KR'
+  return (localStorage.getItem('uiLang') as UiLang) ?? 'KR'
+}
+
 export const useQuizStore = create<QuizStore>((set, get) => ({
+  uiLang: 'KR',
+  setUiLang: (lang) => {
+    localStorage.setItem('uiLang', lang)
+    set({ uiLang: lang })
+  },
+
+  quizLangMode: 'source',
+  setQuizLangMode: (mode) => set({ quizLangMode: mode }),
+
   questions: [],
   config: DEFAULT_CONFIG,
   sourceText: '',

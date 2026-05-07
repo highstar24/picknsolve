@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
+import { T } from '@/lib/i18n'
 
 const card: React.CSSProperties = {
   background: 'rgba(255,255,255,0.92)',
@@ -13,17 +14,16 @@ const card: React.CSSProperties = {
 }
 
 const SCORE_CONFIG = [
-  { min: 90, emoji: '🏆', label: '완벽 마스터!', from: '#00d4ff', mid: '#a855f7', to: '#ff3fa0' },
-  { min: 70, emoji: '🎉', label: '잘했어요!',   from: '#ff3fa0', mid: '#f97316', to: '#ffb800' },
-  { min: 50, emoji: '💪', label: '절반 성공!',  from: '#f97316', mid: '#fb923c', to: '#fbbf24' },
-  { min: 0,  emoji: '📖', label: '더 공부해요', from: '#f43f5e', mid: '#ec4899', to: '#fb7185' },
+  { min: 90, emoji: '🏆', from: '#00d4ff', mid: '#a855f7', to: '#ff3fa0' },
+  { min: 70, emoji: '🎉', from: '#ff3fa0', mid: '#f97316', to: '#ffb800' },
+  { min: 50, emoji: '💪', from: '#f97316', mid: '#fb923c', to: '#fbbf24' },
+  { min: 0,  emoji: '📖', from: '#f43f5e', mid: '#ec4899', to: '#fb7185' },
 ]
-
-const DIFFICULTY_LABEL: Record<string, string> = { easy: '쉬움', normal: '보통', hard: '어려움' }
 
 export default function ResultPage() {
   const router = useRouter()
-  const { questions, answers, config, reset } = useQuizStore()
+  const { questions, answers, config, reset, uiLang } = useQuizStore()
+  const t = T[uiLang]
 
   useEffect(() => { if (questions.length === 0) router.replace('/') }, [questions.length, router])
   if (questions.length === 0) return null
@@ -31,7 +31,9 @@ export default function ResultPage() {
   const mainAnswers = answers.filter((a) => a.questionId !== 999)
   const correctCount = mainAnswers.filter((a) => a.isCorrect).length
   const score = Math.round((correctCount / questions.length) * 100)
-  const conf = SCORE_CONFIG.find((s) => score >= s.min) ?? SCORE_CONFIG[SCORE_CONFIG.length - 1]
+  const confIdx = SCORE_CONFIG.findIndex((s) => score >= s.min)
+  const conf = SCORE_CONFIG[confIdx] ?? SCORE_CONFIG[SCORE_CONFIG.length - 1]
+  const confLabel = t.resultTitles[confIdx] ?? t.resultTitles[t.resultTitles.length - 1]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -65,15 +67,15 @@ export default function ResultPage() {
           letterSpacing: '-3px', lineHeight: 1, marginTop: '6px', position: 'relative',
           textShadow: '0 2px 12px rgba(0,0,0,0.15)',
         }}>
-          {score}<span style={{ fontSize: '22px', fontWeight: 700, opacity: 0.85 }}>점</span>
+          {score}<span style={{ fontSize: '22px', fontWeight: 700, opacity: 0.85 }}>{t.scoreUnit}</span>
         </div>
-        <p style={{ fontWeight: 900, fontSize: '18px', color: '#fff', margin: '6px 0 20px', position: 'relative', textShadow: '0 1px 6px rgba(0,0,0,0.1)' }}>{conf.label}</p>
+        <p style={{ fontWeight: 900, fontSize: '18px', color: '#fff', margin: '6px 0 20px', position: 'relative', textShadow: '0 1px 6px rgba(0,0,0,0.1)' }}>{confLabel}</p>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', position: 'relative' }}>
           {[
-            { label: '정답', value: correctCount },
-            { label: '오답', value: questions.length - correctCount },
-            { label: '난이도', value: DIFFICULTY_LABEL[config.difficulty] },
+            { label: t.statCorrect, value: correctCount },
+            { label: t.statWrong, value: questions.length - correctCount },
+            { label: t.statDiff, value: t.diffLabels[config.difficulty] },
           ].map((item) => (
             <div key={item.label} style={{
               background: 'rgba(255,255,255,0.22)',
@@ -90,7 +92,7 @@ export default function ResultPage() {
       <h2 style={{
         margin: '4px 0', fontWeight: 800, fontSize: '14px', textAlign: 'center',
         color: 'rgba(255,255,255,0.85)',
-      }}>문제별 결과</h2>
+      }}>{t.reviewTitle}</h2>
 
       {questions.map((q, i) => {
         const answer = mainAnswers.find((a) => a.questionId === q.id)
@@ -117,12 +119,12 @@ export default function ResultPage() {
                 </p>
                 {!isCorrect && (
                   <div style={{ fontSize: '12px', marginBottom: '7px' }}>
-                    <p style={{ margin: '0 0 3px', color: '#be123c', fontWeight: 600 }}>내 답: {answer?.selectedLabel}. {selectedOpt?.text ?? '미선택'}</p>
-                    <p style={{ margin: 0, color: '#065f46', fontWeight: 600 }}>정답: {q.correctLabel}. {correctOpt?.text}</p>
+                    <p style={{ margin: '0 0 3px', color: '#be123c', fontWeight: 600 }}>{t.myAnswer} {answer?.selectedLabel}. {selectedOpt?.text ?? t.notSelected}</p>
+                    <p style={{ margin: 0, color: '#065f46', fontWeight: 600 }}>{t.correctAnswer} {q.correctLabel}. {correctOpt?.text}</p>
                   </div>
                 )}
                 <details style={{ fontSize: '12px' }}>
-                  <summary style={{ cursor: 'pointer', color: '#a855f7', fontWeight: 600, userSelect: 'none' }}>해설 보기</summary>
+                  <summary style={{ cursor: 'pointer', color: '#a855f7', fontWeight: 600, userSelect: 'none' }}>{t.showExplanation}</summary>
                   <p style={{ margin: '7px 0 0', color: '#4a1080', lineHeight: 1.75, paddingLeft: '10px', borderLeft: '3px solid #e9d5ff' }}>
                     {q.explanation}
                   </p>
@@ -142,7 +144,7 @@ export default function ResultPage() {
         boxShadow: '0 8px 24px rgba(255,63,160,0.45)',
         textShadow: '0 1px 4px rgba(0,0,0,0.1)',
       }}>
-        🔁 새 퀴즈 만들기
+        {t.retryBtn}
       </button>
     </div>
   )

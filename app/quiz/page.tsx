@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
+import { T } from '@/lib/i18n'
 import type { QuizQuestion } from '@/types'
 
 const card: React.CSSProperties = {
@@ -18,10 +19,11 @@ export default function QuizPage() {
   const {
     questions, currentIndex, answers, showFeedback,
     similarQuestion, isSimilarMode, config, sourceText,
-    fileBase64, fileType, usedSimilarIndices,
+    fileBase64, fileType, usedSimilarIndices, uiLang, quizLangMode,
     submitAnswer, nextQuestion,
     setSimilarQuestion, enterSimilarMode, exitSimilarMode, markSimilarUsed,
   } = useQuizStore()
+  const t = T[uiLang]
 
   const [loadingSimilar, setLoadingSimilar] = useState(false)
   const [selectedLabel, setSelectedLabel] = useState<string | null>(null)
@@ -49,7 +51,7 @@ export default function QuizPage() {
   async function handleSimilar() {
     setLoadingSimilar(true)
     try {
-      const body: Record<string, unknown> = { originalQuestion: currentQuestion.question, difficulty: config.difficulty, sourceText: sourceText || '' }
+      const body: Record<string, unknown> = { originalQuestion: currentQuestion.question, difficulty: config.difficulty, sourceText: sourceText || '', quizLangMode, uiLang }
       if (fileBase64) { body.fileBase64 = fileBase64; body.fileType = fileType }
       const res = await fetch('/api/similar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       const data = await res.json()
@@ -78,7 +80,7 @@ export default function QuizPage() {
             color: isSimilarMode ? '#ffb800' : '#fff',
             padding: '3px 12px', borderRadius: '100px',
           }}>
-            {isSimilarMode ? '🔄 유사 문제' : `${currentIndex + 1} / ${questions.length}`}
+            {isSimilarMode ? t.similarMode : `${currentIndex + 1} / ${questions.length}`}
           </span>
           <span style={{ fontSize: '12px', fontWeight: 800, color: '#ffec40' }}>{progress}%</span>
         </div>
@@ -158,7 +160,7 @@ export default function QuizPage() {
                 : 'linear-gradient(135deg, #e11d48, #f43f5e)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
-              {lastAnswer.isCorrect ? '정답!' : '오답'}
+              {lastAnswer.isCorrect ? t.correct : t.wrong}
             </p>
           </div>
 
@@ -167,7 +169,7 @@ export default function QuizPage() {
             fontSize: '13px', color: '#4a1080', lineHeight: 1.75, textAlign: 'left',
             border: '1px solid #f3e8ff',
           }}>
-            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#c084fc', letterSpacing: '0.5px' }}>📖 해설</p>
+            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#c084fc', letterSpacing: '0.5px' }}>{t.explanationLabel}</p>
             {currentQuestion.explanation}
           </div>
 
@@ -180,7 +182,7 @@ export default function QuizPage() {
                   color: '#c084fc', fontWeight: 600, fontSize: '13px',
                   textAlign: 'center',
                 }}>
-                  ✅ 유사 문제 완료
+                  {t.similarDone}
                 </div>
               ) : (
                 <button onClick={handleSimilar} disabled={loadingSimilar} style={{
@@ -191,13 +193,13 @@ export default function QuizPage() {
                   cursor: loadingSimilar ? 'not-allowed' : 'pointer',
                   boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(249,115,22,0.35)',
                   transition: 'all 0.2s',
-                }}>{loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}</button>
+                }}>{loadingSimilar ? t.similarLoading : t.similarBtn}</button>
               )}
               <button onClick={() => exitSimilarMode()} style={{
                 flex: 1, padding: '12px', borderRadius: '12px',
                 background: '#fdf8ff', border: '1.5px solid #e9d5ff',
                 color: '#9333ea', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-              }}>⏭ 패스</button>
+              }}>{t.passBtn}</button>
             </div>
           )}
 
@@ -210,7 +212,7 @@ export default function QuizPage() {
               boxShadow: '0 4px 16px rgba(255,63,160,0.4)',
               textShadow: '0 1px 4px rgba(0,0,0,0.1)',
             }}>
-              {currentIndex + 1 >= questions.length && !isSimilarMode ? '결과 보기 →' : '다음 문제 →'}
+              {currentIndex + 1 >= questions.length && !isSimilarMode ? t.resultBtn : t.nextBtn}
             </button>
           )}
         </div>

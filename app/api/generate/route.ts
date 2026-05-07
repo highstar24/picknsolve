@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { Difficulty, QuizQuestion } from '@/types'
+import { LANG_NAME_FOR_PROMPT } from '@/lib/i18n'
+import type { UiLang, QuizLangMode } from '@/lib/i18n'
 
 const DIFFICULTY_PROMPT: Record<Difficulty, string> = {
   easy: '초등학생도 이해할 수 있는 기본 개념 확인 수준',
@@ -11,7 +13,7 @@ const DIFFICULTY_PROMPT: Record<Difficulty, string> = {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { text, difficulty, count, fileBase64, fileType, isSimilar, originalQuestion } = body
+    const { text, difficulty, count, fileBase64, fileType, isSimilar, originalQuestion, quizLangMode, uiLang } = body
 
     // 입력 검증
     if (!difficulty || !['easy', 'normal', 'hard'].includes(difficulty)) {
@@ -35,25 +37,22 @@ export async function POST(req: NextRequest) {
     const genAI = new GoogleGenerativeAI(apiKey)
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' })
 
+    const mode: QuizLangMode = quizLangMode === 'translate' ? 'translate' : 'source'
+    const lang: UiLang = ['KR', 'EN', 'ZH'].includes(uiLang) ? uiLang : 'KR'
+
     let prompt: string
 
     if (isSimilar) {
-      prompt = buildSimilarPrompt(originalQuestion, difficulty, text ?? '')
+      prompt = buildSimilarPrompt(originalQuestion, difficulty, text ?? '', mode, lang)
     } else {
-      prompt = buildQuizPrompt(difficulty, count)
+      prompt = buildQuizPrompt(difficulty, count, mode, lang)
     }
 
     let result
     if (fileBase64 && fileType) {
-      // 이미지 또는 PDF를 멀티모달로 전달
       result = await model.generateContent([
         prompt,
-        {
-          inlineData: {
-            mimeType: fileType,
-            data: fileBase64,
-          },
-        },
+        { inlineData: { mimeType: fileType, data: fileBase64 } },
       ])
     } else {
       result = await model.generateContent(prompt + '\n\n학습 자료:\n' + (text ?? ''))
@@ -72,7 +71,15 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function buildQuizPrompt(difficulty: Difficulty, count: number): string {
+function buildLangRule(mode: QuizLangMode, uiLang: UiLang): string {
+  if (mode === 'translate') {
+    const langName = LANG_NAME_FOR_PROMPT[uiLang]
+    return `4. 문제(question)와 해설(explanation)은 반드시 ${langName}로 작성하고, 보기(options의 text)는 학습 자료의 원래 언어로 작성`
+  }
+  return `4. 문제·보기·해설은 반드시 학습 자료와 동일한 언어로 작성`
+}
+
+function buildQuizPrompt(difficulty: Difficulty, count: number, mode: QuizLangMode, uiLang: UiLang): string {
   return `다음 학습 자료를 바탕으로 5지 선다형 문제를 ${count}개 생성해줘.
 
 난이도: ${DIFFICULTY_PROMPT[difficulty]}
@@ -81,7 +88,7 @@ function buildQuizPrompt(difficulty: Difficulty, count: number): string {
 1. 반드시 JSON 배열 형식으로만 응답 (다른 텍스트 없이)
 2. 보기는 A~E 5개, 정답은 correctLabel에 'A'~'E' 중 하나
 3. explanation은 정답 근거 + 오답 이유를 난이도에 맞게 설명
-4. 문제·보기·해설은 반드시 학습 자료와 동일한 언어로 작성
+${buildLangRule(mode, uiLang)}
 
 응답 형식:
 [
@@ -101,12 +108,16 @@ function buildQuizPrompt(difficulty: Difficulty, count: number): string {
 ]`
 }
 
-function buildSimilarPrompt(originalQuestion: string, difficulty: Difficulty, sourceText: string): string {
+function buildSimilarPrompt(originalQuestion: string, difficulty: Difficulty, sourceText: string, mode: QuizLangMode, uiLang: UiLang): string {
+  const langRule = mode === 'translate'
+    ? `언어: 문제·해설은 ${LANG_NAME_FOR_PROMPT[uiLang]}로, 보기는 원래 문제와 동일한 언어로 작성`
+    : `언어: 원래 문제와 동일한 언어로 작성`
+
   return `다음 문제와 같은 개념을 다루지만 다른 방식으로 묻는 유사 문제 1개를 생성해줘.
 
 원래 문제: ${originalQuestion}
 난이도: ${DIFFICULTY_PROMPT[difficulty]}
-언어: 원래 문제와 동일한 언어로 작성
+${langRule}
 
 반드시 JSON 객체 형식으로만 응답 (배열 아님, 다른 텍스트 없이):
 {
