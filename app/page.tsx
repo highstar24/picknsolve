@@ -145,7 +145,7 @@ export default function HomePage() {
                   textAlign: 'center',
                 }}>
                   <span>{label}</span>
-                  <span style={{ fontSize: '10px', fontWeight: 500, opacity: 0.8, lineHeight: 1.4 }}>{desc}</span>
+                  <span style={{ fontSize: '10px', fontWeight: 500, opacity: 0.8, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{desc}</span>
                 </button>
               )
             })}
