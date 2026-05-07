@@ -17,9 +17,9 @@ const card: React.CSSProperties = {
 }
 
 const SCORE_CONFIG = [
-  { min: 90, emoji: '🏆', from: '#FFAF24', mid: '#FF7F42', to: '#FFE2B8' },
-  { min: 70, emoji: '🎉', from: '#FF7F42', mid: '#FFAF24', to: '#f97316' },
-  { min: 50, emoji: '💪', from: '#AC87CD', mid: '#724784', to: '#9333ea' },
+  { min: 90, emoji: '🏆', from: '#EDCD44', mid: '#f5a623', to: '#DC3E26' },
+  { min: 70, emoji: '🎉', from: '#DC3E26', mid: '#e8762a', to: '#EDCD44' },
+  { min: 50, emoji: '💪', from: '#81CAD6', mid: '#3aa8c1', to: '#0a7fa0' },
   { min: 0,  emoji: '📖', from: '#e11d48', mid: '#f43f5e', to: '#fb7185' },
 ]
 
@@ -66,7 +66,7 @@ export default function ResultPage() {
             position: 'fixed', inset: 0, zIndex: 1000,
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(80,0,140,0.55)',
+            background: 'rgba(12,32,48,0.65)',
             backdropFilter: 'blur(6px)',
             cursor: 'pointer',
             animation: 'fadeIn 0.4s ease',
@@ -83,7 +83,7 @@ export default function ResultPage() {
           }}>
             오늘도 한걸음<br />
             <span style={{
-              background: 'linear-gradient(135deg, #FF7F42, #FFAF24, #FFE2B8)',
+              background: 'linear-gradient(135deg, #DC3E26, #EDCD44, #EDCD44)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
               성장하셨습니다
@@ -179,7 +179,7 @@ export default function ResultPage() {
                   color: isCorrect ? '#065f46' : '#be123c', fontWeight: 800,
                 }}>{isCorrect ? '✓' : '✗'}</span>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: '0 0 7px', fontSize: '13px', fontWeight: 600, color: '#2d0a4e', lineHeight: 1.5 }}>
+                  <p style={{ margin: '0 0 7px', fontSize: '13px', fontWeight: 600, color: '#0d2233', lineHeight: 1.5 }}>
                     <span style={{ color: '#c084fc', marginRight: '3px' }}>Q{i + 1}.</span>{q.question}
                   </p>
                   {!isCorrect && (
@@ -189,8 +189,8 @@ export default function ResultPage() {
                     </div>
                   )}
                   <details style={{ fontSize: '12px' }}>
-                    <summary style={{ cursor: 'pointer', color: '#a855f7', fontWeight: 600, userSelect: 'none' }}>{t.showExplanation}</summary>
-                    <p style={{ margin: '7px 0 0', color: '#4a1080', lineHeight: 1.75, paddingLeft: '10px', borderLeft: '3px solid #e9d5ff' }}>
+                    <summary style={{ cursor: 'pointer', color: '#0a7fa0', fontWeight: 600, userSelect: 'none' }}>{t.showExplanation}</summary>
+                    <p style={{ margin: '7px 0 0', color: '#0d3d52', lineHeight: 1.75, paddingLeft: '10px', borderLeft: '3px solid #b8e0e8' }}>
                       {q.explanation}
                     </p>
                   </details>
@@ -202,11 +202,11 @@ export default function ResultPage() {
 
         <button onClick={() => { reset(); router.push('/') }} style={{
           width: '100%', padding: '18px', marginBottom: '32px',
-          background: 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 100%)',
+          background: 'linear-gradient(135deg, #DC3E26 0%, #EDCD44 100%)',
           border: 'none',
           borderRadius: '16px', color: '#fff', fontWeight: 900,
           fontSize: '16px', cursor: 'pointer',
-          boxShadow: '0 8px 24px rgba(255,127,66,0.45)',
+          boxShadow: '0 8px 24px rgba(220,62,38,0.45)',
           textShadow: '0 1px 4px rgba(0,0,0,0.1)',
         }}>
           {t.retryBtn}

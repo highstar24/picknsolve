@@ -80,18 +80,18 @@ export default function QuizPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <span style={{
             fontSize: '12px', fontWeight: 700,
-            background: isSimilarMode ? 'rgba(255,140,35,0.25)' : 'rgba(255,255,255,0.2)',
-            color: isSimilarMode ? '#ffb800' : '#fff',
+            background: isSimilarMode ? 'rgba(237,205,68,0.25)' : 'rgba(255,255,255,0.2)',
+            color: isSimilarMode ? '#EDCD44' : '#fff',
             padding: '3px 12px', borderRadius: '100px',
           }}>
             {isSimilarMode ? t.similarMode : `${currentIndex + 1} / ${questions.length}`}
           </span>
-          <span style={{ fontSize: '12px', fontWeight: 800, color: '#ffec40' }}>{progress}%</span>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#EDCD44' }}>{progress}%</span>
         </div>
         <div style={{ height: '6px', background: 'rgba(255,255,255,0.2)', borderRadius: '100px', overflow: 'hidden' }}>
           <div style={{
             height: '100%', borderRadius: '100px',
-            background: 'linear-gradient(90deg, #FF7F42, #FFAF24)',
+            background: 'linear-gradient(90deg, #DC3E26, #EDCD44)',
             width: `${progress}%`, transition: 'width 0.5s ease',
           }} />
         </div>
@@ -99,7 +99,7 @@ export default function QuizPage() {
 
       {/* 문제 카드 */}
       <div style={card}>
-        <p style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.75, margin: '0 0 18px', color: '#2d0a4e', textAlign: 'center' }}>
+        <p style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.75, margin: '0 0 18px', color: '#0d2233', textAlign: 'center' }}>
           {currentQuestion.question}
         </p>
 
@@ -107,17 +107,17 @@ export default function QuizPage() {
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedLabel === opt.label
             const isCorrect = opt.label === currentQuestion.correctLabel
-            let bg = '#fdf8ff'
-            let border = '1.5px solid #e9d5ff'
-            let color = '#4a1080'
+            let bg = '#f0f8fc'
+            let border = '1.5px solid #b8e0e8'
+            let color = '#0d3d52'
             let shadow = 'none'
 
             if (showFeedback) {
               if (isCorrect) { bg = '#f0fdf4'; border = '2px solid #34d399'; color = '#065f46'; shadow = '0 2px 8px rgba(52,211,153,0.2)' }
               else if (isSelected) { bg = '#fff1f2'; border = '2px solid #fda4af'; color = '#be123c' }
-              else { bg = '#fafafa'; color = '#d8b4fe'; border = '1.5px solid #f3e8ff' }
+              else { bg = '#fafafa'; color = '#d8b4fe'; border = '1.5px solid #ddf0f4' }
             } else if (isSelected) {
-              bg = 'rgba(255,127,66,0.08)'; border = '2px solid #FF7F42'; color = '#7c2d12'; shadow = '0 2px 10px rgba(255,127,66,0.2)'
+              bg = 'rgba(220,62,38,0.08)'; border = '2px solid #DC3E26'; color = '#7c2d12'; shadow = '0 2px 10px rgba(220,62,38,0.2)'
             }
 
             return (
@@ -134,8 +134,8 @@ export default function QuizPage() {
                   width: '27px', height: '27px', borderRadius: '50%', flexShrink: 0,
                   background: showFeedback && isCorrect ? '#d1fae5'
                     : showFeedback && isSelected ? '#ffe4e6'
-                    : isSelected ? 'rgba(255,127,66,0.15)'
-                    : '#f3e8ff',
+                    : isSelected ? 'rgba(220,62,38,0.15)'
+                    : '#ddf0f4',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 800, fontSize: '11px', color,
                 }}>{opt.label}</span>
@@ -170,10 +170,10 @@ export default function QuizPage() {
 
           <div style={{
             background: '#fff', borderRadius: '12px', padding: '13px',
-            fontSize: '13px', color: '#4a1080', lineHeight: 1.75, textAlign: 'left',
-            border: '1px solid #f3e8ff',
+            fontSize: '13px', color: '#0d3d52', lineHeight: 1.75, textAlign: 'left',
+            border: '1px solid #ddf0f4',
           }}>
-            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#c084fc', letterSpacing: '0.5px' }}>{t.explanationLabel}</p>
+            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#81CAD6', letterSpacing: '0.5px' }}>{t.explanationLabel}</p>
             {currentQuestion.explanation}
           </div>
 
@@ -182,8 +182,8 @@ export default function QuizPage() {
               {similarAlreadyUsed ? (
                 <div style={{
                   flex: 1, padding: '12px', borderRadius: '12px',
-                  background: '#fafafa', border: '1.5px solid #f3e8ff',
-                  color: '#c084fc', fontWeight: 600, fontSize: '13px',
+                  background: '#fafafa', border: '1.5px solid #ddf0f4',
+                  color: '#81CAD6', fontWeight: 600, fontSize: '13px',
                   textAlign: 'center',
                 }}>
                   {t.similarDone}
@@ -191,18 +191,18 @@ export default function QuizPage() {
               ) : (
                 <button onClick={handleSimilar} disabled={loadingSimilar} style={{
                   flex: 1, padding: '12px', borderRadius: '12px',
-                  background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #FF7F42, #FFAF24)',
+                  background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #DC3E26, #EDCD44)',
                   border: 'none',
                   color: '#fff', fontWeight: 700, fontSize: '13px',
                   cursor: loadingSimilar ? 'not-allowed' : 'pointer',
-                  boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(255,127,66,0.35)',
+                  boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(220,62,38,0.35)',
                   transition: 'all 0.2s',
                 }}>{loadingSimilar ? t.similarLoading : t.similarBtn}</button>
               )}
               <button onClick={() => exitSimilarMode()} style={{
                 flex: 1, padding: '12px', borderRadius: '12px',
-                background: '#fdf8ff', border: '1.5px solid #e9d5ff',
-                color: '#9333ea', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
+                background: '#f0f8fc', border: '1.5px solid #b8e0e8',
+                color: '#0a7fa0', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
               }}>{t.passBtn}</button>
             </div>
           )}
@@ -210,10 +210,10 @@ export default function QuizPage() {
           {(lastAnswer.isCorrect || isSimilarMode) && (
             <button onClick={nextQuestion} style={{
               width: '100%', padding: '14px', marginTop: '12px', borderRadius: '12px',
-              background: 'linear-gradient(135deg, #FF7F42, #FFAF24)',
+              background: 'linear-gradient(135deg, #DC3E26, #EDCD44)',
               border: 'none',
               color: '#fff', fontWeight: 900, fontSize: '14px', cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(255,127,66,0.4)',
+              boxShadow: '0 4px 16px rgba(220,62,38,0.4)',
               textShadow: '0 1px 4px rgba(0,0,0,0.1)',
             }}>
               {currentIndex + 1 >= questions.length && !isSimilarMode ? t.resultBtn : t.nextBtn}

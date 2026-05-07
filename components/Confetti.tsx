@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-const COLORS = ['#00d4ff', '#ff3fa0', '#ffb800', '#a855f7', '#34d399', '#f97316', '#fff']
+const COLORS = ['#DC3E26', '#EDCD44', '#81CAD6', '#34d399', '#f97316', '#fff', '#ffdd57']
 
 interface Piece {
   x: number; y: number

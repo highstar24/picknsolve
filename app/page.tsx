@@ -9,9 +9,9 @@ import { T } from '@/lib/i18n'
 import type { Difficulty, QuizQuestion } from '@/types'
 
 const DIFFICULTY_OPTIONS: { value: Difficulty; color: string; bg: string; border: string }[] = [
-  { value: 'easy',   color: '#00b4d8', bg: 'rgba(0,212,255,0.12)',  border: 'rgba(0,212,255,0.5)' },
-  { value: 'normal', color: '#c026d3', bg: 'rgba(255,63,160,0.12)', border: 'rgba(255,63,160,0.5)' },
-  { value: 'hard',   color: '#ea580c', bg: 'rgba(255,140,35,0.12)', border: 'rgba(255,140,35,0.5)' },
+  { value: 'easy',   color: '#0a7fa0', bg: 'rgba(129,202,214,0.15)', border: 'rgba(129,202,214,0.6)' },
+  { value: 'normal', color: '#9a8500', bg: 'rgba(237,205,68,0.18)',  border: 'rgba(237,205,68,0.65)' },
+  { value: 'hard',   color: '#b02f1e', bg: 'rgba(220,62,38,0.14)',   border: 'rgba(220,62,38,0.55)' },
 ]
 
 const card: React.CSSProperties = {
@@ -110,10 +110,10 @@ export default function HomePage() {
           <span style={{
             display: 'block',
             fontSize: '34px', fontWeight: 900,
-            background: 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 60%, #FFE2B8 100%)',
+            background: 'linear-gradient(135deg, #DC3E26 0%, #EDCD44 100%)',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             letterSpacing: '-1px',
-            filter: 'drop-shadow(0 2px 16px rgba(255,127,66,0.5))',
+            filter: 'drop-shadow(0 2px 16px rgba(220,62,38,0.5))',
           }}>
             {t.heroTitleAccent}
           </span>
@@ -128,7 +128,7 @@ export default function HomePage() {
           borderRadius: '100px', padding: '5px 14px',
           fontSize: '12px', fontWeight: 700, color: '#fff',
         }}>
-          📝 {t.remainingLabel} <strong style={{ color: '#FFAF24' }}>{remaining}/{LIMIT}</strong>
+          📝 {t.remainingLabel} <strong style={{ color: '#EDCD44' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 
@@ -136,7 +136,7 @@ export default function HomePage() {
 
         {/* 문제 언어 모드 */}
         <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.quizLangTitle}</p>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.quizLangTitle}</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             {(['source', 'translate'] as const).map((mode) => {
               const active = quizLangMode === mode
@@ -145,10 +145,10 @@ export default function HomePage() {
               return (
                 <button key={mode} type="button" onClick={() => setQuizLangMode(mode)} style={{
                   padding: '14px 10px', borderRadius: '13px', cursor: 'pointer',
-                  border: `2px solid ${active ? 'rgba(124,16,184,0.5)' : 'transparent'}`,
-                  background: active ? 'rgba(124,16,184,0.1)' : 'rgba(245,240,255,0.8)',
+                  border: `2px solid ${active ? 'rgba(13,93,122,0.5)' : 'transparent'}`,
+                  background: active ? 'rgba(13,93,122,0.12)' : 'rgba(240,248,252,0.85)',
                   fontWeight: 700, fontSize: '13px',
-                  color: active ? '#7c10b8' : '#a78bfa',
+                  color: active ? '#0d5c7a' : '#81CAD6',
                   boxShadow: active ? '0 4px 14px rgba(124,16,184,0.15)' : 'none',
                   transition: 'all 0.2s',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
@@ -164,14 +164,14 @@ export default function HomePage() {
 
         {/* 입력 방식 탭 */}
         <div style={card}>
-          <div style={{ display: 'flex', gap: '6px', background: 'rgba(120,0,200,0.07)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', gap: '6px', background: 'rgba(129,202,214,0.12)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
             {(['text', 'file'] as const).map((tp) => (
               <button key={tp} type="button" onClick={() => setInputType(tp)} style={{
                 flex: 1, padding: '9px', borderRadius: '9px', border: 'none',
                 fontWeight: 700, fontSize: '13px', cursor: 'pointer',
-                background: inputType === tp ? 'linear-gradient(135deg, #FF7F42, #FFAF24)' : 'transparent',
-                color: inputType === tp ? '#fff' : '#AC87CD',
-                boxShadow: inputType === tp ? '0 2px 10px rgba(255,127,66,0.35)' : 'none',
+                background: inputType === tp ? 'linear-gradient(135deg, #DC3E26, #EDCD44)' : 'transparent',
+                color: inputType === tp ? '#fff' : '#81CAD6',
+                boxShadow: inputType === tp ? '0 2px 10px rgba(220,62,38,0.35)' : 'none',
                 transition: 'all 0.2s',
               }}>
                 {tp === 'text' ? t.tabText : t.tabFile}
@@ -186,27 +186,27 @@ export default function HomePage() {
                 maxLength={10000}
                 style={{
                   width: '100%', height: '148px', padding: '13px',
-                  background: '#fdf8ff', border: '1.5px solid #e9d5ff',
+                  background: '#f0f8fc', border: '1.5px solid #b8e0e8',
                   borderRadius: '12px', fontSize: '14px', resize: 'none', outline: 'none',
-                  lineHeight: 1.6, color: '#2d0a4e', transition: 'border-color 0.2s',
+                  lineHeight: 1.6, color: '#0d2233', transition: 'border-color 0.2s',
                 }}
-                onFocus={e => e.target.style.borderColor = '#FF7F42'}
-                onBlur={e => e.target.style.borderColor = '#e9d5ff'}
+                onFocus={e => e.target.style.borderColor = '#DC3E26'}
+                onBlur={e => e.target.style.borderColor = '#b8e0e8'}
               />
-              <div style={{ textAlign: 'right', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
+              <div style={{ textAlign: 'right', fontSize: '11px', color: '#81CAD6', marginTop: '5px' }}>
                 {text.length.toLocaleString()} / 10,000
               </div>
             </>
           ) : (
             <>
               <div onClick={() => fileRef.current?.click()} style={{
-                border: `2px dashed ${file ? '#6ee7b7' : '#d8b4fe'}`,
+                border: `2px dashed ${file ? '#6ee7b7' : '#81CAD6'}`,
                 borderRadius: '14px', padding: '32px 20px', cursor: 'pointer',
-                background: file ? '#f0fdf4' : '#fdf8ff',
+                background: file ? '#f0fdf4' : '#f0f8fc',
                 textAlign: 'center', transition: 'all 0.2s',
               }}
-                onMouseEnter={e => { if (!file) e.currentTarget.style.borderColor = '#c026d3' }}
-                onMouseLeave={e => { if (!file) e.currentTarget.style.borderColor = '#d8b4fe' }}
+                onMouseEnter={e => { if (!file) e.currentTarget.style.borderColor = '#0a7fa0' }}
+                onMouseLeave={e => { if (!file) e.currentTarget.style.borderColor = '#81CAD6' }}
               >
                 {file ? (
                   <>
@@ -217,8 +217,8 @@ export default function HomePage() {
                 ) : (
                   <>
                     <div style={{ fontSize: '28px' }}>🌸</div>
-                    <div style={{ fontWeight: 700, color: '#9333ea', marginTop: '8px', fontSize: '14px' }}>{t.fileClickHint}</div>
-                    <div style={{ fontSize: '12px', color: '#c084fc', marginTop: '4px' }}>{t.fileTypeHint}</div>
+                    <div style={{ fontWeight: 700, color: '#0a7fa0', marginTop: '8px', fontSize: '14px' }}>{t.fileClickHint}</div>
+                    <div style={{ fontSize: '12px', color: '#81CAD6', marginTop: '4px' }}>{t.fileTypeHint}</div>
                   </>
                 )}
               </div>
@@ -230,7 +230,7 @@ export default function HomePage() {
 
         {/* 난이도 */}
         <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.difficultyTitle}</p>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.difficultyTitle}</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
             {DIFFICULTY_OPTIONS.map((opt) => {
               const active = difficulty === opt.value
@@ -240,9 +240,9 @@ export default function HomePage() {
                 <button key={opt.value} type="button" onClick={() => setDifficulty(opt.value)} style={{
                   padding: '14px 6px', borderRadius: '13px', cursor: 'pointer',
                   border: `2px solid ${active ? opt.border : 'transparent'}`,
-                  background: active ? opt.bg : 'rgba(245,240,255,0.8)',
+                  background: active ? opt.bg : 'rgba(240,248,252,0.85)',
                   fontWeight: 700, fontSize: '13px',
-                  color: active ? opt.color : '#a78bfa',
+                  color: active ? opt.color : '#81CAD6',
                   boxShadow: active ? `0 4px 14px ${opt.border.replace('0.5)', '0.25)')}` : 'none',
                   transition: 'all 0.2s',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
@@ -258,19 +258,19 @@ export default function HomePage() {
         {/* 문항 수 */}
         <div style={card}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: '8px', marginBottom: '12px' }}>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.questionCountTitle}</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.questionCountTitle}</p>
             <span style={{
               fontSize: '34px', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1,
-              background: 'linear-gradient(135deg, #FF7F42, #FFAF24)',
+              background: 'linear-gradient(135deg, #DC3E26, #EDCD44)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
               {count}
             </span>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: '#c084fc' }}>{t.questionCountUnit}</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: '#81CAD6' }}>{t.questionCountUnit}</span>
           </div>
           <input type="range" min={1} max={5} value={count} onChange={(e) => setCount(Number(e.target.value))}
             style={{ width: '100%' }} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#81CAD6', marginTop: '5px' }}>
             <span>1</span><span>3</span><span>5</span>
           </div>
         </div>
@@ -286,13 +286,13 @@ export default function HomePage() {
           width: '100%', padding: '18px',
           background: loading || remaining === 0
             ? 'rgba(255,255,255,0.25)'
-            : 'linear-gradient(135deg, #FF7F42 0%, #FFAF24 100%)',
+            : 'linear-gradient(135deg, #DC3E26 0%, #EDCD44 100%)',
           color: loading || remaining === 0 ? 'rgba(255,255,255,0.5)' : '#fff',
           border: 'none',
           borderRadius: '16px', fontWeight: 900, fontSize: '16px',
           cursor: loading || remaining === 0 ? 'not-allowed' : 'pointer',
           letterSpacing: '-0.3px',
-          boxShadow: loading || remaining === 0 ? 'none' : '0 8px 24px rgba(255,127,66,0.45)',
+          boxShadow: loading || remaining === 0 ? 'none' : '0 8px 24px rgba(220,62,38,0.45)',
           transition: 'all 0.2s',
           textShadow: '0 1px 4px rgba(0,0,0,0.15)',
         }}>
