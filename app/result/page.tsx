@@ -4,64 +4,70 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
 
-const SCORE_MESSAGES = [
-  { min: 90, emoji: '🏆', message: '완벽해요! 이 자료는 완전히 마스터했습니다.' },
-  { min: 70, emoji: '🎉', message: '잘했어요! 몇 가지만 더 확인하면 완벽합니다.' },
-  { min: 50, emoji: '💪', message: '절반은 알고 있어요! 오답을 다시 복습해 보세요.' },
-  { min: 0, emoji: '📖', message: '더 공부가 필요해요. 자료를 다시 읽어보세요.' },
+const SCORE_CONFIG = [
+  { min: 90, emoji: '🏆', label: '완벽 마스터!', color: '#A6E553', text: '#1a1a1a' },
+  { min: 70, emoji: '🎉', label: '잘했어요!', color: '#FFFD87', text: '#1a1a1a' },
+  { min: 50, emoji: '💪', label: '절반 성공!', color: '#FFAB39', text: '#1a1a1a' },
+  { min: 0,  emoji: '📖', label: '더 공부해요', color: '#F25A79', text: '#fff' },
 ]
 
-function getScoreMessage(score: number) {
-  return SCORE_MESSAGES.find((m) => score >= m.min) ?? SCORE_MESSAGES[SCORE_MESSAGES.length - 1]
-}
+const DIFFICULTY_LABEL: Record<string, string> = { easy: '쉬움', normal: '보통', hard: '어려움' }
 
 export default function ResultPage() {
   const router = useRouter()
   const { questions, answers, config, reset } = useQuizStore()
 
-  useEffect(() => {
-    if (questions.length === 0) {
-      router.replace('/')
-    }
-  }, [questions.length, router])
-
+  useEffect(() => { if (questions.length === 0) router.replace('/') }, [questions.length, router])
   if (questions.length === 0) return null
 
-  // answers 중 originalQuestion answers만 (유사 문제 제외 — id 999 제외)
   const mainAnswers = answers.filter((a) => a.questionId !== 999)
   const correctCount = mainAnswers.filter((a) => a.isCorrect).length
   const score = Math.round((correctCount / questions.length) * 100)
-  const { emoji, message } = getScoreMessage(score)
-
-  const DIFFICULTY_LABEL: Record<string, string> = {
-    easy: '쉬움',
-    normal: '보통',
-    hard: '어려움',
-  }
-
-  function handleReset() {
-    reset()
-    router.push('/')
-  }
+  const scoreConf = SCORE_CONFIG.find((s) => score >= s.min) ?? SCORE_CONFIG[SCORE_CONFIG.length - 1]
 
   return (
-    <div className="space-y-6">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
       {/* 점수 카드 */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 text-center space-y-3">
-        <div className="text-5xl">{emoji}</div>
-        <div className="text-5xl font-bold text-blue-600">{score}점</div>
-        <p className="text-slate-600">{message}</p>
-        <div className="flex justify-center gap-4 text-sm text-slate-500 pt-2">
-          <span>✅ 정답 <strong className="text-green-600">{correctCount}</strong></span>
-          <span>❌ 오답 <strong className="text-red-500">{questions.length - correctCount}</strong></span>
-          <span>📝 총 <strong>{questions.length}</strong>문항</span>
-          <span>🎯 난이도 <strong>{DIFFICULTY_LABEL[config.difficulty]}</strong></span>
+      <div style={{
+        background: scoreConf.color, border: '2px solid #1a1a1a',
+        borderRadius: '20px', padding: '32px 24px', textAlign: 'center',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: '-30px', right: '-30px',
+          width: '120px', height: '120px', borderRadius: '50%',
+          background: 'rgba(255,255,255,0.2)',
+        }} />
+        <div style={{ fontSize: '48px' }}>{scoreConf.emoji}</div>
+        <div style={{ fontSize: '64px', fontWeight: 900, color: scoreConf.text, letterSpacing: '-2px', lineHeight: 1 }}>
+          {score}
+          <span style={{ fontSize: '24px', fontWeight: 700 }}>점</span>
+        </div>
+        <div style={{ fontSize: '18px', fontWeight: 800, color: scoreConf.text, marginTop: '6px' }}>
+          {scoreConf.label}
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '16px' }}>
+          {[
+            { label: '정답', value: correctCount, color: '#1a1a1a' },
+            { label: '오답', value: questions.length - correctCount, color: '#1a1a1a' },
+            { label: '난이도', value: DIFFICULTY_LABEL[config.difficulty], color: '#1a1a1a' },
+          ].map((item) => (
+            <div key={item.label} style={{
+              background: 'rgba(255,255,255,0.6)', borderRadius: '12px',
+              padding: '8px 14px', textAlign: 'center',
+            }}>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: item.color }}>{item.value}</div>
+              <div style={{ fontSize: '11px', color: '#555', marginTop: '2px' }}>{item.label}</div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* 문제별 결과 */}
-      <div className="space-y-3">
-        <h2 className="font-bold text-slate-700 text-lg">문제별 결과</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <h2 style={{ margin: 0, fontWeight: 800, fontSize: '16px' }}>문제별 결과</h2>
         {questions.map((q, i) => {
           const answer = mainAnswers.find((a) => a.questionId === q.id)
           const isCorrect = answer?.isCorrect ?? false
@@ -70,36 +76,43 @@ export default function ResultPage() {
           const selectedOpt = q.options.find((o) => o.label === selectedLabel)
 
           return (
-            <div
-              key={q.id}
-              className={`bg-white rounded-2xl p-5 border-2 ${
-                isCorrect ? 'border-green-100' : 'border-red-100'
-              } shadow-sm`}
-            >
-              <div className="flex items-start gap-3">
-                <span className="flex-shrink-0 text-xl">{isCorrect ? '✅' : '❌'}</span>
-                <div className="space-y-2 flex-1">
-                  <p className="text-sm font-medium text-slate-800">
-                    <span className="text-slate-400 mr-1">Q{i + 1}.</span>
+            <div key={q.id} style={{
+              background: '#fff',
+              border: `2px solid ${isCorrect ? '#A6E553' : '#F25A79'}`,
+              borderRadius: '16px', padding: '16px',
+            }}>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <span style={{
+                  flexShrink: 0,
+                  width: '28px', height: '28px', borderRadius: '50%',
+                  background: isCorrect ? '#A6E553' : '#F25A79',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '14px', border: '1.5px solid #1a1a1a',
+                }}>
+                  {isCorrect ? '✓' : '✗'}
+                </span>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#1a1a1a', lineHeight: 1.5 }}>
+                    <span style={{ color: '#aaa', marginRight: '4px' }}>Q{i + 1}.</span>
                     {q.question}
                   </p>
 
                   {!isCorrect && (
-                    <div className="text-xs space-y-1">
-                      <p className="text-red-500">
-                        내 답: <span className="font-medium">{selectedLabel}. {selectedOpt?.text ?? '미선택'}</span>
+                    <div style={{ fontSize: '12px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      <p style={{ margin: 0, color: '#F25A79', fontWeight: 600 }}>
+                        내 답: {selectedLabel}. {selectedOpt?.text ?? '미선택'}
                       </p>
-                      <p className="text-green-600">
-                        정답: <span className="font-medium">{q.correctLabel}. {correctOpt?.text}</span>
+                      <p style={{ margin: 0, color: '#3a8a00', fontWeight: 600 }}>
+                        정답: {q.correctLabel}. {correctOpt?.text}
                       </p>
                     </div>
                   )}
 
-                  <details className="text-xs">
-                    <summary className="cursor-pointer text-slate-400 hover:text-slate-600 select-none">
+                  <details style={{ fontSize: '13px' }}>
+                    <summary style={{ cursor: 'pointer', color: '#888', userSelect: 'none', fontWeight: 600 }}>
                       해설 보기
                     </summary>
-                    <p className="mt-2 text-slate-600 leading-relaxed pl-2 border-l-2 border-slate-200">
+                    <p style={{ margin: '8px 0 0 0', color: '#555', lineHeight: 1.7, paddingLeft: '12px', borderLeft: '3px solid #e0e0e0' }}>
                       {q.explanation}
                     </p>
                   </details>
@@ -110,15 +123,19 @@ export default function ResultPage() {
         })}
       </div>
 
-      {/* 액션 버튼 */}
-      <div className="space-y-2 pb-8">
-        <button
-          onClick={handleReset}
-          className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg rounded-2xl transition-colors"
-        >
-          🔁 새 퀴즈 만들기
-        </button>
-      </div>
+      {/* 새 퀴즈 버튼 */}
+      <button
+        onClick={() => { reset(); router.push('/') }}
+        style={{
+          width: '100%', padding: '18px', marginBottom: '32px',
+          background: '#1a1a1a', color: '#FFFD87',
+          border: 'none', borderRadius: '16px',
+          fontWeight: 800, fontSize: '16px', cursor: 'pointer',
+          letterSpacing: '-0.3px',
+        }}
+      >
+        🔁 새 퀴즈 만들기
+      </button>
     </div>
   )
 }

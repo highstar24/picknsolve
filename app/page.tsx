@@ -7,10 +7,10 @@ import { validateFile } from '@/lib/extractText'
 import { hasRemaining, getRemainingCount, incrementCount, LIMIT } from '@/lib/rateLimit'
 import type { Difficulty, QuizQuestion } from '@/types'
 
-const DIFFICULTY_OPTIONS: { value: Difficulty; label: string; desc: string }[] = [
-  { value: 'easy', label: '쉬움', desc: '개념 확인 · 기초' },
-  { value: 'normal', label: '보통', desc: '응용 · 이해' },
-  { value: 'hard', label: '어려움', desc: '심화 · 추론' },
+const DIFFICULTY_OPTIONS: { value: Difficulty; label: string; desc: string; color: string; bg: string }[] = [
+  { value: 'easy', label: '쉬움', desc: '개념 확인', color: '#1a1a1a', bg: '#A6E553' },
+  { value: 'normal', label: '보통', desc: '응용·이해', color: '#1a1a1a', bg: '#FFAB39' },
+  { value: 'hard', label: '어려움', desc: '심화·추론', color: '#fff', bg: '#F25A79' },
 ]
 
 export default function HomePage() {
@@ -94,28 +94,64 @@ export default function HomePage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-slate-800">내 자료로 퀴즈 만들기</h1>
-        <p className="text-slate-500">텍스트, 이미지, PDF를 올리면 AI가 맞춤 문제를 만들어 드립니다.</p>
-        <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-sm px-3 py-1.5 rounded-full">
-          <span>📅</span>
-          <span>오늘 남은 생성: <strong>{remaining}/{LIMIT}회</strong></span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+      {/* 히어로 */}
+      <div style={{
+        background: '#FFFD87',
+        border: '2px solid #1a1a1a',
+        borderRadius: '20px',
+        padding: '28px 24px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: '-20px', right: '-20px',
+          width: '120px', height: '120px', borderRadius: '50%',
+          background: '#F25A79', opacity: 0.3,
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '-30px', right: '60px',
+          width: '80px', height: '80px', borderRadius: '50%',
+          background: '#6698E6', opacity: 0.4,
+        }} />
+        <h1 style={{ fontSize: '24px', fontWeight: 800, lineHeight: 1.3, margin: 0, letterSpacing: '-0.5px' }}>
+          내 자료로<br />퀴즈 만들기 ✨
+        </h1>
+        <p style={{ fontSize: '14px', color: '#555', marginTop: '8px', marginBottom: '0' }}>
+          텍스트·이미지·PDF를 올리면 AI가 문제를 생성해요
+        </p>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          background: '#fff', border: '1.5px solid #1a1a1a',
+          borderRadius: '100px', padding: '4px 12px',
+          fontSize: '12px', fontWeight: 600, marginTop: '12px',
+        }}>
+          📅 오늘 남은 횟수 <strong style={{ color: '#6698E6' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* 입력 방식 */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
-          <div className="flex gap-2">
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+        {/* 입력 방식 카드 */}
+        <div style={{
+          background: '#fff', border: '2px solid #1a1a1a',
+          borderRadius: '20px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px',
+        }}>
+          {/* 탭 */}
+          <div style={{ display: 'flex', gap: '8px', background: '#f3f3f3', borderRadius: '12px', padding: '4px' }}>
             {(['text', 'file'] as const).map((t) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => setInputType(t)}
-                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  inputType === t ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                style={{
+                  flex: 1, padding: '8px', borderRadius: '9px', border: 'none',
+                  fontWeight: 700, fontSize: '13px', cursor: 'pointer',
+                  background: inputType === t ? '#6698E6' : 'transparent',
+                  color: inputType === t ? '#fff' : '#777',
+                  transition: 'all 0.15s',
+                }}
               >
                 {t === 'text' ? '✏️ 텍스트 입력' : '📎 파일 업로드'}
               </button>
@@ -123,93 +159,118 @@ export default function HomePage() {
           </div>
 
           {inputType === 'text' ? (
-            <div className="space-y-1.5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="공부할 내용을 여기에 붙여넣으세요. (최대 10,000자)"
-                className="w-full h-44 px-4 py-3 rounded-xl border border-slate-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
                 maxLength={10000}
+                style={{
+                  width: '100%', height: '160px', padding: '14px',
+                  border: '1.5px solid #e0e0e0', borderRadius: '12px',
+                  fontSize: '14px', resize: 'none', outline: 'none',
+                  fontFamily: 'inherit', lineHeight: 1.6,
+                  transition: 'border-color 0.15s',
+                }}
+                onFocus={e => e.target.style.borderColor = '#6698E6'}
+                onBlur={e => e.target.style.borderColor = '#e0e0e0'}
               />
-              <div className="text-right text-xs text-slate-400">{text.length.toLocaleString()} / 10,000</div>
+              <div style={{ textAlign: 'right', fontSize: '12px', color: '#aaa' }}>
+                {text.length.toLocaleString()} / 10,000
+              </div>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <div
-                className="border-2 border-dashed border-slate-200 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-colors"
                 onClick={() => fileRef.current?.click()}
+                style={{
+                  border: '2px dashed #ccc', borderRadius: '14px',
+                  padding: '36px 20px', textAlign: 'center', cursor: 'pointer',
+                  transition: 'all 0.15s',
+                  background: file ? '#f0fff0' : '#fafafa',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = '#6698E6')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = '#ccc')}
               >
                 {file ? (
-                  <div className="space-y-1">
-                    <div className="text-2xl">✅</div>
-                    <div className="font-medium text-slate-700">{file.name}</div>
-                    <div className="text-sm text-slate-400">{(file.size / 1024 / 1024).toFixed(2)} MB</div>
-                  </div>
+                  <>
+                    <div style={{ fontSize: '28px' }}>✅</div>
+                    <div style={{ fontWeight: 700, marginTop: '6px' }}>{file.name}</div>
+                    <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
+                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </div>
+                  </>
                 ) : (
-                  <div className="space-y-2">
-                    <div className="text-3xl">📂</div>
-                    <div className="font-medium text-slate-600">클릭하여 파일 선택</div>
-                    <div className="text-xs text-slate-400">JPG · PNG · WEBP · PDF · TXT (10MB 이하)</div>
-                  </div>
+                  <>
+                    <div style={{ fontSize: '32px' }}>📂</div>
+                    <div style={{ fontWeight: 700, marginTop: '8px', color: '#444' }}>클릭하여 파일 선택</div>
+                    <div style={{ fontSize: '12px', color: '#aaa', marginTop: '4px' }}>
+                      JPG · PNG · WEBP · PDF · TXT (10MB 이하)
+                    </div>
+                  </>
                 )}
               </div>
-              <input
-                ref={fileRef}
-                type="file"
-                accept=".jpg,.jpeg,.png,.webp,.pdf,.txt"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-              {fileError && <p className="text-sm text-red-500">{fileError}</p>}
+              <input ref={fileRef} type="file" accept=".jpg,.jpeg,.png,.webp,.pdf,.txt" style={{ display: 'none' }} onChange={handleFileChange} />
+              {fileError && <p style={{ fontSize: '13px', color: '#F25A79', margin: 0 }}>{fileError}</p>}
             </div>
           )}
         </div>
 
         {/* 난이도 */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-3">
-          <p className="text-sm font-medium text-slate-700">난이도</p>
-          <div className="grid grid-cols-3 gap-2">
+        <div style={{
+          background: '#fff', border: '2px solid #1a1a1a',
+          borderRadius: '20px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px',
+        }}>
+          <p style={{ margin: 0, fontWeight: 700, fontSize: '15px' }}>난이도</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
             {DIFFICULTY_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 type="button"
                 onClick={() => setDifficulty(opt.value)}
-                className={`p-3 rounded-xl border-2 text-center transition-colors ${
-                  difficulty === opt.value ? 'border-blue-500 bg-blue-50' : 'border-slate-100 hover:border-slate-300'
-                }`}
+                style={{
+                  padding: '14px 8px', borderRadius: '14px', cursor: 'pointer',
+                  border: difficulty === opt.value ? '2.5px solid #1a1a1a' : '2px solid transparent',
+                  background: difficulty === opt.value ? opt.bg : '#f5f5f5',
+                  color: difficulty === opt.value ? opt.color : '#888',
+                  fontWeight: 700, fontSize: '14px',
+                  transition: 'all 0.15s',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+                }}
               >
-                <div className={`font-bold text-sm ${difficulty === opt.value ? 'text-blue-600' : 'text-slate-700'}`}>
-                  {opt.label}
-                </div>
-                <div className="text-xs text-slate-400 mt-0.5">{opt.desc}</div>
+                <span>{opt.label}</span>
+                <span style={{ fontSize: '11px', fontWeight: 500, opacity: 0.8 }}>{opt.desc}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* 문항 수 */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-slate-700">문항 수</p>
-            <span className="text-2xl font-bold text-blue-600">{count}문항</span>
+        <div style={{
+          background: '#fff', border: '2px solid #1a1a1a',
+          borderRadius: '20px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '15px' }}>문항 수</p>
+            <span style={{
+              fontSize: '28px', fontWeight: 800, color: '#6698E6', letterSpacing: '-1px',
+            }}>{count}<span style={{ fontSize: '14px', fontWeight: 600, color: '#aaa', marginLeft: '2px' }}>문항</span></span>
           </div>
           <input
-            type="range"
-            min={1}
-            max={20}
-            value={count}
+            type="range" min={1} max={20} value={count}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-full accent-blue-500"
+            style={{ width: '100%', accentColor: '#6698E6', height: '4px' }}
           />
-          <div className="flex justify-between text-xs text-slate-400">
-            <span>1</span>
-            <span>10</span>
-            <span>20</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#bbb' }}>
+            <span>1문항</span><span>10문항</span><span>20문항</span>
           </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">
+          <div style={{
+            background: '#fff0f3', border: '1.5px solid #F25A79',
+            borderRadius: '12px', padding: '12px 16px', fontSize: '13px', color: '#c0384f',
+          }}>
             {error}
           </div>
         )}
@@ -217,17 +278,22 @@ export default function HomePage() {
         <button
           type="submit"
           disabled={loading || remaining === 0}
-          className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold text-lg rounded-2xl transition-colors flex items-center justify-center gap-2"
+          style={{
+            width: '100%', padding: '18px',
+            background: loading || remaining === 0 ? '#ddd' : '#1a1a1a',
+            color: loading || remaining === 0 ? '#aaa' : '#FFFD87',
+            border: 'none', borderRadius: '16px',
+            fontWeight: 800, fontSize: '16px', cursor: loading || remaining === 0 ? 'not-allowed' : 'pointer',
+            letterSpacing: '-0.3px', transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { if (!loading && remaining > 0) e.currentTarget.style.background = '#333' }}
+          onMouseLeave={e => { if (!loading && remaining > 0) e.currentTarget.style.background = '#1a1a1a' }}
         >
-          {loading ? (
-            <><span className="animate-spin inline-block">⏳</span> 문제 생성 중...</>
-          ) : (
-            <>✨ 문제 생성하기</>
-          )}
+          {loading ? '⏳ 문제 생성 중...' : '✨ 문제 생성하기'}
         </button>
 
-        <p className="text-center text-xs text-slate-400">
-          빠른 분석을 위해 PDF는 20페이지 이하, 파일은 10MB 이하를 권장합니다.
+        <p style={{ textAlign: 'center', fontSize: '12px', color: '#bbb', margin: 0 }}>
+          PDF는 20페이지 이하, 파일은 10MB 이하를 권장합니다
         </p>
       </form>
     </div>

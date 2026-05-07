@@ -8,21 +8,10 @@ import type { QuizQuestion } from '@/types'
 export default function QuizPage() {
   const router = useRouter()
   const {
-    questions,
-    currentIndex,
-    answers,
-    showFeedback,
-    similarQuestion,
-    isSimilarMode,
-    config,
-    sourceText,
-    fileBase64,
-    fileType,
-    submitAnswer,
-    nextQuestion,
-    setSimilarQuestion,
-    enterSimilarMode,
-    exitSimilarMode,
+    questions, currentIndex, answers, showFeedback,
+    similarQuestion, isSimilarMode, config, sourceText,
+    fileBase64, fileType, submitAnswer, nextQuestion,
+    setSimilarQuestion, enterSimilarMode, exitSimilarMode,
   } = useQuizStore()
 
   const [loadingSimilar, setLoadingSimilar] = useState(false)
@@ -30,21 +19,9 @@ export default function QuizPage() {
 
   const isFinished = currentIndex >= questions.length && !isSimilarMode
 
-  useEffect(() => {
-    if (questions.length === 0) {
-      router.replace('/')
-    }
-  }, [questions.length, router])
-
-  useEffect(() => {
-    setSelectedLabel(null)
-  }, [currentIndex, isSimilarMode])
-
-  useEffect(() => {
-    if (isFinished) {
-      router.push('/result')
-    }
-  }, [isFinished, router])
+  useEffect(() => { if (questions.length === 0) router.replace('/') }, [questions.length, router])
+  useEffect(() => { setSelectedLabel(null) }, [currentIndex, isSimilarMode])
+  useEffect(() => { if (isFinished) router.push('/result') }, [isFinished, router])
 
   if (questions.length === 0) return null
 
@@ -67,11 +44,7 @@ export default function QuizPage() {
         difficulty: config.difficulty,
         sourceText: sourceText || '',
       }
-      if (fileBase64) {
-        body.fileBase64 = fileBase64
-        body.fileType = fileType
-      }
-
+      if (fileBase64) { body.fileBase64 = fileBase64; body.fileType = fileType }
       const res = await fetch('/api/similar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -89,51 +62,55 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="space-y-5">
-      {/* 진행 상태 */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-slate-500">
-            {isSimilarMode ? '🔄 유사 문제' : `문제 ${currentIndex + 1} / ${totalCount}`}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+      {/* 진행 바 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{
+            fontSize: '13px', fontWeight: 700,
+            color: isSimilarMode ? '#FFAB39' : '#6698E6',
+            background: isSimilarMode ? '#fff5e6' : '#eef2ff',
+            padding: '3px 10px', borderRadius: '100px',
+          }}>
+            {isSimilarMode ? '🔄 유사 문제' : `${currentIndex + 1} / ${totalCount}`}
           </span>
-          <span className="font-medium text-slate-700">{progress}%</span>
+          <span style={{ fontSize: '13px', fontWeight: 700, color: '#1a1a1a' }}>{progress}%</span>
         </div>
-        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-blue-500 rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
+        <div style={{ height: '6px', background: '#eee', borderRadius: '100px', overflow: 'hidden' }}>
+          <div style={{
+            height: '100%', borderRadius: '100px',
+            background: 'linear-gradient(90deg, #92D0D8, #6698E6)',
+            width: `${progress}%`, transition: 'width 0.5s ease',
+          }} />
         </div>
-        {isSimilarMode && (
-          <div className="text-xs text-center text-amber-600 bg-amber-50 rounded-lg py-1.5">
-            오답 개념을 한 번 더 확인해 보세요!
-          </div>
-        )}
       </div>
 
       {/* 문제 카드 */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-5">
-        <p className="text-lg font-semibold text-slate-800 leading-relaxed">
+      <div style={{
+        background: '#fff', border: '2px solid #1a1a1a',
+        borderRadius: '20px', padding: '24px',
+        display: 'flex', flexDirection: 'column', gap: '16px',
+      }}>
+        <p style={{ fontSize: '16px', fontWeight: 700, lineHeight: 1.6, margin: 0, color: '#1a1a1a' }}>
           {currentQuestion.question}
         </p>
 
-        {/* 보기 */}
-        <div className="space-y-2.5">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedLabel === opt.label
             const isCorrect = opt.label === currentQuestion.correctLabel
-            let style = 'bg-slate-50 border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50/30'
+
+            let bg = '#f8f8f8'
+            let border = '1.5px solid #e8e8e8'
+            let color = '#333'
 
             if (showFeedback) {
-              if (isCorrect) {
-                style = 'bg-green-50 border-green-400 text-green-800'
-              } else if (isSelected && !isCorrect) {
-                style = 'bg-red-50 border-red-400 text-red-700'
-              } else {
-                style = 'bg-slate-50 border-slate-200 text-slate-400'
-              }
+              if (isCorrect) { bg = '#A6E553'; border = '2px solid #1a1a1a'; color = '#1a1a1a' }
+              else if (isSelected && !isCorrect) { bg = '#F25A79'; border = '2px solid #1a1a1a'; color = '#fff' }
+              else { bg = '#f3f3f3'; border = '1.5px solid #e8e8e8'; color = '#bbb' }
             } else if (isSelected) {
-              style = 'bg-blue-50 border-blue-400 text-blue-800'
+              bg = '#FFFD87'; border = '2px solid #1a1a1a'; color = '#1a1a1a'
             }
 
             return (
@@ -141,63 +118,93 @@ export default function QuizPage() {
                 key={opt.label}
                 onClick={() => handleSelect(opt.label)}
                 disabled={showFeedback}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-left transition-colors text-sm ${style}`}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  padding: '13px 16px', borderRadius: '12px',
+                  border, background: bg, color,
+                  cursor: showFeedback ? 'default' : 'pointer',
+                  textAlign: 'left', fontSize: '14px', fontWeight: 500,
+                  transition: 'all 0.12s', width: '100%',
+                }}
+                onMouseEnter={e => { if (!showFeedback) e.currentTarget.style.borderColor = '#6698E6' }}
+                onMouseLeave={e => { if (!showFeedback && !isSelected) e.currentTarget.style.borderColor = '#e8e8e8' }}
               >
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white border border-current flex items-center justify-center font-bold text-xs">
+                <span style={{
+                  width: '28px', height: '28px', borderRadius: '50%',
+                  border: `1.5px solid ${color}`, display: 'flex',
+                  alignItems: 'center', justifyContent: 'center',
+                  fontWeight: 800, fontSize: '12px', flexShrink: 0,
+                }}>
                   {opt.label}
                 </span>
-                <span className="flex-1">{opt.text}</span>
-                {showFeedback && isCorrect && <span className="flex-shrink-0">✅</span>}
-                {showFeedback && isSelected && !isCorrect && <span className="flex-shrink-0">❌</span>}
+                <span style={{ flex: 1 }}>{opt.text}</span>
+                {showFeedback && isCorrect && <span>✅</span>}
+                {showFeedback && isSelected && !isCorrect && <span>❌</span>}
               </button>
             )
           })}
         </div>
       </div>
 
-      {/* 피드백 패널 */}
+      {/* 피드백 */}
       {showFeedback && lastAnswer && (
-        <div
-          className={`rounded-2xl p-5 border space-y-4 ${
-            lastAnswer.isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
-            <span className={`font-bold text-lg ${lastAnswer.isCorrect ? 'text-green-700' : 'text-red-700'}`}>
-              {lastAnswer.isCorrect ? '정답입니다!' : '오답입니다.'}
+        <div style={{
+          background: lastAnswer.isCorrect ? '#A6E553' : '#fff0f3',
+          border: '2px solid #1a1a1a', borderRadius: '20px', padding: '20px',
+          display: 'flex', flexDirection: 'column', gap: '14px',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '24px' }}>{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
+            <span style={{ fontWeight: 800, fontSize: '18px', color: '#1a1a1a' }}>
+              {lastAnswer.isCorrect ? '정답!' : '오답'}
             </span>
           </div>
 
-          <div className="bg-white/70 rounded-xl p-4 text-sm text-slate-700 leading-relaxed">
-            <p className="font-medium text-slate-500 text-xs mb-1.5">📖 해설</p>
+          <div style={{
+            background: 'rgba(255,255,255,0.7)', borderRadius: '12px', padding: '14px',
+            fontSize: '13px', color: '#333', lineHeight: 1.7,
+          }}>
+            <p style={{ margin: '0 0 4px 0', fontWeight: 700, fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>해설</p>
             {currentQuestion.explanation}
           </div>
 
-          {/* 오답 액션 */}
           {!lastAnswer.isCorrect && !isSimilarMode && (
-            <div className="flex gap-2">
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 onClick={handleSimilar}
                 disabled={loadingSimilar}
-                className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300 text-white font-medium rounded-xl text-sm transition-colors"
+                style={{
+                  flex: 1, padding: '13px', borderRadius: '12px',
+                  border: '2px solid #1a1a1a',
+                  background: loadingSimilar ? '#eee' : '#FFAB39',
+                  color: '#1a1a1a', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                }}
               >
                 {loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}
               </button>
               <button
                 onClick={() => exitSimilarMode()}
-                className="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-xl text-sm transition-colors"
+                style={{
+                  flex: 1, padding: '13px', borderRadius: '12px',
+                  border: '2px solid #1a1a1a',
+                  background: '#fff', color: '#555',
+                  fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                }}
               >
-                ⏭ 패스하기
+                ⏭ 패스
               </button>
             </div>
           )}
 
-          {/* 유사문제 완료 후 / 정답 후 다음 */}
           {(lastAnswer.isCorrect || isSimilarMode) && (
             <button
               onClick={nextQuestion}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl text-sm transition-colors"
+              style={{
+                width: '100%', padding: '14px', borderRadius: '12px',
+                border: '2px solid #1a1a1a',
+                background: '#1a1a1a', color: '#FFFD87',
+                fontWeight: 800, fontSize: '15px', cursor: 'pointer',
+              }}
             >
               {currentIndex + 1 >= totalCount && !isSimilarMode ? '결과 보기 →' : '다음 문제 →'}
             </button>

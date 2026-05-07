@@ -9,17 +9,45 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-10">
-          <div className="max-w-2xl mx-auto flex items-center gap-2">
-            <span className="text-2xl">📚</span>
-            <a href="/" className="text-xl font-bold text-blue-600 hover:text-blue-700">
-              픽앤솔브
+      <body style={{ background: '#FAFAF8', minHeight: '100vh' }}>
+        <header style={{
+          background: '#fff',
+          borderBottom: '2px solid #1a1a1a',
+          padding: '0 24px',
+          height: '56px',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+        }}>
+          <div style={{ maxWidth: '640px', margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+              <span style={{
+                background: '#F25A79',
+                color: '#fff',
+                fontWeight: 800,
+                fontSize: '14px',
+                padding: '3px 10px',
+                borderRadius: '100px',
+                letterSpacing: '-0.3px',
+              }}>PICK</span>
+              <span style={{
+                background: '#6698E6',
+                color: '#fff',
+                fontWeight: 800,
+                fontSize: '14px',
+                padding: '3px 10px',
+                borderRadius: '100px',
+                letterSpacing: '-0.3px',
+              }}>SOLVE</span>
             </a>
-            <span className="text-slate-400 text-sm ml-1">AI 퀴즈 생성기</span>
+            <span style={{ color: '#999', fontSize: '13px' }}>AI 퀴즈 생성기</span>
           </div>
         </header>
-        <main className="max-w-2xl mx-auto px-4 py-8">{children}</main>
+        <main style={{ maxWidth: '640px', margin: '0 auto', padding: '32px 20px' }}>
+          {children}
+        </main>
       </body>
     </html>
   )
