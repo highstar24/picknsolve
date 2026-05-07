@@ -119,7 +119,7 @@ export default function HomePage() {
           borderRadius: '100px', padding: '5px 14px',
           fontSize: '12px', fontWeight: 700, color: '#fff',
         }}>
-          📅 오늘 남은 횟수 <strong style={{ color: '#ffec40' }}>{remaining}/{LIMIT}</strong>
+          📝 오늘 문제 생성 횟수 <strong style={{ color: '#ffec40' }}>{remaining}/{LIMIT}</strong>
         </div>
       </div>
 
@@ -232,10 +232,10 @@ export default function HomePage() {
             </span>
             <span style={{ fontSize: '14px', fontWeight: 600, color: '#c084fc' }}>문항</span>
           </div>
-          <input type="range" min={1} max={20} value={count} onChange={(e) => setCount(Number(e.target.value))}
+          <input type="range" min={1} max={5} value={count} onChange={(e) => setCount(Number(e.target.value))}
             style={{ width: '100%' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
-            <span>1</span><span>10</span><span>20</span>
+            <span>1</span><span>3</span><span>5</span>
           </div>
         </div>
 

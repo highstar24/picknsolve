@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
     if (!difficulty || !['easy', 'normal', 'hard'].includes(difficulty)) {
       return NextResponse.json({ error: '난이도가 올바르지 않습니다.' }, { status: 400 })
     }
-    if (!count || count < 1 || count > 20) {
-      return NextResponse.json({ error: '문항 수는 1~20 사이여야 합니다.' }, { status: 400 })
+    if (!count || count < 1 || count > 5) {
+      return NextResponse.json({ error: '문항 수는 1~5 사이여야 합니다.' }, { status: 400 })
     }
     if (!text && !fileBase64) {
       return NextResponse.json({ error: '학습 자료가 없습니다.' }, { status: 400 })
