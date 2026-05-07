@@ -32,7 +32,7 @@ export default function HomePage() {
   const [file, setFile] = useState<File | null>(null)
   const [fileError, setFileError] = useState<string | null>(null)
   const [difficulty, setDifficulty] = useState<Difficulty>('normal')
-  const [count, setCount] = useState(10)
+  const [count, setCount] = useState(5)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
