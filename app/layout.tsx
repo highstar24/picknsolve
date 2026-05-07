@@ -15,34 +15,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
           {/* 레드 블롭 - 우상단 */}
           <div style={{
-            position: 'absolute', top: '-60px', right: '-40px',
-            width: '320px', height: '320px',
-            background: 'radial-gradient(ellipse, rgba(220,62,38,0.18) 0%, rgba(237,205,68,0.08) 55%, transparent 70%)',
+            position: 'absolute', top: '-80px', right: '-60px',
+            width: '380px', height: '380px',
+            background: 'radial-gradient(ellipse, rgba(220,62,38,0.30) 0%, rgba(237,205,68,0.10) 50%, transparent 70%)',
             borderRadius: '60% 40% 55% 45% / 45% 60% 40% 55%',
-            filter: 'blur(4px)',
+            filter: 'blur(30px)',
           }} />
-          {/* 옐로우 블롭 - 좌상단 */}
+          {/* 옐로우 블롭 - 좌중단 */}
           <div style={{
-            position: 'absolute', top: '10%', left: '-50px',
-            width: '260px', height: '260px',
-            background: 'radial-gradient(ellipse, rgba(237,205,68,0.28) 0%, rgba(237,205,68,0.06) 55%, transparent 70%)',
+            position: 'absolute', top: '25%', left: '-70px',
+            width: '300px', height: '300px',
+            background: 'radial-gradient(ellipse, rgba(237,205,68,0.38) 0%, rgba(237,205,68,0.08) 55%, transparent 70%)',
             borderRadius: '45% 55% 40% 60% / 55% 40% 60% 45%',
-            filter: 'blur(4px)',
+            filter: 'blur(25px)',
           }} />
           {/* 레드 소블롭 - 우하단 */}
           <div style={{
-            position: 'absolute', bottom: '-40px', right: '-20px',
-            width: '240px', height: '240px',
-            background: 'radial-gradient(ellipse, rgba(220,62,38,0.14) 0%, rgba(237,205,68,0.06) 55%, transparent 70%)',
+            position: 'absolute', bottom: '-50px', right: '-30px',
+            width: '280px', height: '280px',
+            background: 'radial-gradient(ellipse, rgba(220,62,38,0.22) 0%, rgba(237,205,68,0.08) 55%, transparent 70%)',
             borderRadius: '50% 60% 45% 55% / 60% 45% 55% 40%',
-            filter: 'blur(3px)',
+            filter: 'blur(20px)',
           }} />
           {/* 옐로우 소블롭 - 좌하단 */}
           <div style={{
-            position: 'absolute', bottom: '15%', left: '5%',
-            width: '180px', height: '180px',
-            background: 'radial-gradient(ellipse, rgba(237,205,68,0.20) 0%, transparent 65%)',
+            position: 'absolute', bottom: '10%', left: '0%',
+            width: '220px', height: '220px',
+            background: 'radial-gradient(ellipse, rgba(237,205,68,0.30) 0%, transparent 65%)',
             borderRadius: '55% 45% 50% 50% / 50% 55% 45% 50%',
+            filter: 'blur(15px)',
           }} />
         </div>
 

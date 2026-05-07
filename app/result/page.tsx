@@ -9,9 +9,9 @@ import dynamic from 'next/dynamic'
 const ConfettiClient = dynamic(() => import('@/components/Confetti'), { ssr: false })
 
 const card: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.92)',
-  border: '1px solid rgba(255,255,255,0.7)',
-  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+  background: '#ffffff',
+  border: '1px solid rgba(220,62,38,0.08)',
+  boxShadow: '0 4px 20px rgba(220,62,38,0.10), 0 1px 4px rgba(0,0,0,0.06)',
   borderRadius: '22px',
   padding: '22px',
 }

@@ -15,9 +15,9 @@ const DIFFICULTY_OPTIONS: { value: Difficulty; color: string; bg: string; border
 ]
 
 const card: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.92)',
-  border: '1px solid rgba(255,255,255,0.7)',
-  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+  background: '#ffffff',
+  border: '1px solid rgba(220,62,38,0.08)',
+  boxShadow: '0 4px 20px rgba(220,62,38,0.10), 0 1px 4px rgba(0,0,0,0.06)',
   borderRadius: '22px',
   padding: '22px',
 }
@@ -132,7 +132,7 @@ export default function HomePage() {
 
         {/* 문제 언어 모드 */}
         <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.quizLangTitle}</p>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#DC3E26' }}>{t.quizLangTitle}</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             {(['source', 'translate'] as const).map((mode) => {
               const active = quizLangMode === mode
@@ -141,11 +141,11 @@ export default function HomePage() {
               return (
                 <button key={mode} type="button" onClick={() => setQuizLangMode(mode)} style={{
                   padding: '14px 10px', borderRadius: '13px', cursor: 'pointer',
-                  border: `2px solid ${active ? 'rgba(13,93,122,0.5)' : 'transparent'}`,
-                  background: active ? 'rgba(13,93,122,0.12)' : 'rgba(240,248,252,0.85)',
+                  border: 'none',
+                  background: active ? 'linear-gradient(135deg, #DC3E26, #EDCD44)' : 'rgba(220,62,38,0.06)',
                   fontWeight: 700, fontSize: '13px',
-                  color: active ? '#0d5c7a' : '#81CAD6',
-                  boxShadow: active ? '0 4px 14px rgba(124,16,184,0.15)' : 'none',
+                  color: active ? '#fff' : '#aaa',
+                  boxShadow: active ? '0 4px 14px rgba(220,62,38,0.3)' : 'none',
                   transition: 'all 0.2s',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
                   textAlign: 'center',
@@ -160,13 +160,13 @@ export default function HomePage() {
 
         {/* 입력 방식 탭 */}
         <div style={card}>
-          <div style={{ display: 'flex', gap: '6px', background: 'rgba(129,202,214,0.12)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', gap: '6px', background: 'rgba(220,62,38,0.06)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
             {(['text', 'file'] as const).map((tp) => (
               <button key={tp} type="button" onClick={() => setInputType(tp)} style={{
                 flex: 1, padding: '9px', borderRadius: '9px', border: 'none',
                 fontWeight: 700, fontSize: '13px', cursor: 'pointer',
                 background: inputType === tp ? 'linear-gradient(135deg, #DC3E26, #EDCD44)' : 'transparent',
-                color: inputType === tp ? '#fff' : '#81CAD6',
+                color: inputType === tp ? '#fff' : '#999',
                 boxShadow: inputType === tp ? '0 2px 10px rgba(220,62,38,0.35)' : 'none',
                 transition: 'all 0.2s',
               }}>
@@ -226,7 +226,7 @@ export default function HomePage() {
 
         {/* 난이도 */}
         <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.difficultyTitle}</p>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#DC3E26' }}>{t.difficultyTitle}</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
             {DIFFICULTY_OPTIONS.map((opt) => {
               const active = difficulty === opt.value
@@ -238,7 +238,7 @@ export default function HomePage() {
                   border: `2px solid ${active ? opt.border : 'transparent'}`,
                   background: active ? opt.bg : 'rgba(240,248,252,0.85)',
                   fontWeight: 700, fontSize: '13px',
-                  color: active ? opt.color : '#81CAD6',
+                  color: active ? opt.color : '#bbb',
                   boxShadow: active ? `0 4px 14px ${opt.border.replace('0.5)', '0.25)')}` : 'none',
                   transition: 'all 0.2s',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
@@ -254,7 +254,7 @@ export default function HomePage() {
         {/* 문항 수 */}
         <div style={card}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: '8px', marginBottom: '12px' }}>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#0d3d52' }}>{t.questionCountTitle}</p>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '14px', color: '#DC3E26' }}>{t.questionCountTitle}</p>
             <span style={{
               fontSize: '34px', fontWeight: 900, letterSpacing: '-1.5px', lineHeight: 1,
               background: 'linear-gradient(135deg, #DC3E26, #EDCD44)',
