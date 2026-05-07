@@ -124,6 +124,34 @@ export default function HomePage() {
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
+        {/* 문제 언어 모드 */}
+        <div style={card}>
+          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.quizLangTitle}</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+            {(['source', 'translate'] as const).map((mode) => {
+              const active = quizLangMode === mode
+              const label = mode === 'source' ? t.quizLangSource : t.quizLangTranslate
+              const desc = mode === 'source' ? t.quizLangSourceDesc : t.quizLangTranslateDesc
+              return (
+                <button key={mode} type="button" onClick={() => setQuizLangMode(mode)} style={{
+                  padding: '14px 10px', borderRadius: '13px', cursor: 'pointer',
+                  border: `2px solid ${active ? 'rgba(124,16,184,0.5)' : 'transparent'}`,
+                  background: active ? 'rgba(124,16,184,0.1)' : 'rgba(245,240,255,0.8)',
+                  fontWeight: 700, fontSize: '13px',
+                  color: active ? '#7c10b8' : '#a78bfa',
+                  boxShadow: active ? '0 4px 14px rgba(124,16,184,0.15)' : 'none',
+                  transition: 'all 0.2s',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
+                  textAlign: 'center',
+                }}>
+                  <span>{label}</span>
+                  <span style={{ fontSize: '10px', fontWeight: 500, opacity: 0.8, lineHeight: 1.4 }}>{desc}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
         {/* 입력 방식 탭 */}
         <div style={card}>
           <div style={{ display: 'flex', gap: '6px', background: 'rgba(120,0,200,0.07)', borderRadius: '12px', padding: '4px', marginBottom: '16px' }}>
@@ -234,34 +262,6 @@ export default function HomePage() {
             style={{ width: '100%' }} />
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#c084fc', marginTop: '5px' }}>
             <span>1</span><span>3</span><span>5</span>
-          </div>
-        </div>
-
-        {/* 문제 언어 모드 */}
-        <div style={card}>
-          <p style={{ margin: '0 0 12px', fontWeight: 700, fontSize: '14px', color: '#6b21a8' }}>{t.quizLangTitle}</p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            {(['source', 'translate'] as const).map((mode) => {
-              const active = quizLangMode === mode
-              const label = mode === 'source' ? t.quizLangSource : t.quizLangTranslate
-              const desc = mode === 'source' ? t.quizLangSourceDesc : t.quizLangTranslateDesc
-              return (
-                <button key={mode} type="button" onClick={() => setQuizLangMode(mode)} style={{
-                  padding: '14px 10px', borderRadius: '13px', cursor: 'pointer',
-                  border: `2px solid ${active ? 'rgba(124,16,184,0.5)' : 'transparent'}`,
-                  background: active ? 'rgba(124,16,184,0.1)' : 'rgba(245,240,255,0.8)',
-                  fontWeight: 700, fontSize: '13px',
-                  color: active ? '#7c10b8' : '#a78bfa',
-                  boxShadow: active ? '0 4px 14px rgba(124,16,184,0.15)' : 'none',
-                  transition: 'all 0.2s',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-                  textAlign: 'center',
-                }}>
-                  <span>{label}</span>
-                  <span style={{ fontSize: '10px', fontWeight: 500, opacity: 0.8, lineHeight: 1.4 }}>{desc}</span>
-                </button>
-              )
-            })}
           </div>
         </div>
 
