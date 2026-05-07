@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
 import type { QuizQuestion } from '@/types'
 
-const glassCard: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.45)',
+const card: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.5)',
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
-  border: '1.5px solid rgba(255,255,255,0.7)',
-  boxShadow: '0 8px 32px rgba(150,100,200,0.12)',
-  borderRadius: '24px',
-  padding: '24px',
+  border: '1.5px solid rgba(255,255,255,0.75)',
+  boxShadow: '0 4px 24px rgba(160,120,220,0.08)',
+  borderRadius: '22px',
+  padding: '22px',
 }
 
 export default function QuizPage() {
@@ -60,57 +60,57 @@ export default function QuizPage() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
       {/* 진행 바 */}
-      <div style={{ ...glassCard, padding: '16px 20px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+      <div style={{ ...card, padding: '14px 18px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <span style={{
-            fontSize: '13px', fontWeight: 700,
-            background: isSimilarMode ? 'rgba(246,188,186,0.5)' : 'rgba(200,168,233,0.3)',
-            color: isSimilarMode ? '#a04040' : '#6b4fa0',
-            padding: '3px 12px', borderRadius: '100px',
+            fontSize: '12px', fontWeight: 700,
+            background: isSimilarMode ? 'rgba(246,188,186,0.4)' : 'rgba(200,168,233,0.25)',
+            color: isSimilarMode ? '#c05050' : '#8b6ab0',
+            padding: '3px 11px', borderRadius: '100px',
           }}>
             {isSimilarMode ? '🔄 유사 문제' : `${currentIndex + 1} / ${questions.length}`}
           </span>
-          <span style={{ fontSize: '13px', fontWeight: 700, color: '#6b4fa0' }}>{progress}%</span>
+          <span style={{ fontSize: '12px', fontWeight: 700, color: '#a080c8' }}>{progress}%</span>
         </div>
-        <div style={{ height: '6px', background: 'rgba(200,168,233,0.2)', borderRadius: '100px', overflow: 'hidden' }}>
+        <div style={{ height: '5px', background: 'rgba(200,168,233,0.18)', borderRadius: '100px', overflow: 'hidden' }}>
           <div style={{
             height: '100%', borderRadius: '100px',
-            background: 'linear-gradient(90deg, #E3AADD, #C3C7F4)',
+            background: 'linear-gradient(90deg, #dba8f0, #b8b4f0)',
             width: `${progress}%`, transition: 'width 0.5s ease',
           }} />
         </div>
       </div>
 
       {/* 문제 카드 */}
-      <div style={glassCard}>
-        <p style={{ fontSize: '16px', fontWeight: 700, lineHeight: 1.7, margin: '0 0 20px', color: '#2d1b4e', textAlign: 'center' }}>
+      <div style={card}>
+        <p style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.7, margin: '0 0 18px', color: '#5b3f8a', textAlign: 'center' }}>
           {currentQuestion.question}
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {currentQuestion.options.map((opt) => {
             const isSelected = selectedLabel === opt.label
             const isCorrect = opt.label === currentQuestion.correctLabel
-            let bg = 'rgba(255,255,255,0.5)'
-            let border = '1.5px solid rgba(200,168,233,0.3)'
-            let color = '#2d1b4e'
+            let bg = 'rgba(255,255,255,0.55)'
+            let border = '1.5px solid rgba(210,195,235,0.45)'
+            let color = '#6b4fa0'
             let shadow = 'none'
 
             if (showFeedback) {
-              if (isCorrect) { bg = 'rgba(164,228,160,0.5)'; border = '2px solid rgba(100,180,100,0.6)'; shadow = '0 4px 12px rgba(100,200,100,0.2)' }
-              else if (isSelected) { bg = 'rgba(246,188,186,0.5)'; border = '2px solid rgba(220,100,100,0.5)'; color = '#9b3030' }
-              else { bg = 'rgba(255,255,255,0.2)'; color = '#b0a0c0' }
+              if (isCorrect) { bg = 'rgba(164,228,160,0.45)'; border = '2px solid rgba(100,180,100,0.5)'; color = '#2d6e2d'; shadow = '0 3px 10px rgba(100,200,100,0.15)' }
+              else if (isSelected) { bg = 'rgba(246,188,186,0.45)'; border = '2px solid rgba(220,100,100,0.45)'; color = '#a03030' }
+              else { bg = 'rgba(255,255,255,0.2)'; color = '#c0b0d8'; border = '1.5px solid rgba(210,195,235,0.25)' }
             } else if (isSelected) {
-              bg = 'rgba(200,168,233,0.35)'; border = '2px solid rgba(200,168,233,0.7)'; shadow = '0 4px 12px rgba(150,100,200,0.15)'
+              bg = 'rgba(200,168,233,0.3)'; border = '2px solid rgba(180,140,220,0.6)'; color = '#6b4fa0'; shadow = '0 3px 10px rgba(150,100,200,0.12)'
             }
 
             return (
               <button key={opt.label} onClick={() => handleSelect(opt.label)} disabled={showFeedback} style={{
-                display: 'flex', alignItems: 'center', gap: '12px',
-                padding: '13px 16px', borderRadius: '14px',
+                display: 'flex', alignItems: 'center', gap: '11px',
+                padding: '12px 14px', borderRadius: '13px',
                 border, background: bg, color,
                 boxShadow: shadow,
                 cursor: showFeedback ? 'default' : 'pointer',
@@ -119,11 +119,11 @@ export default function QuizPage() {
                 backdropFilter: 'blur(10px)',
               }}>
                 <span style={{
-                  width: '28px', height: '28px', borderRadius: '50%', flexShrink: 0,
-                  background: showFeedback && isCorrect ? 'rgba(100,180,100,0.3)' : 'rgba(255,255,255,0.6)',
-                  border: `1.5px solid ${color}`,
+                  width: '26px', height: '26px', borderRadius: '50%', flexShrink: 0,
+                  background: showFeedback && isCorrect ? 'rgba(100,180,100,0.25)' : 'rgba(255,255,255,0.7)',
+                  border: `1.5px solid ${border.split(' ')[2]}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 800, fontSize: '12px',
+                  fontWeight: 800, fontSize: '11px', color,
                 }}>{opt.label}</span>
                 <span style={{ flex: 1 }}>{opt.text}</span>
                 {showFeedback && isCorrect && <span>✅</span>}
@@ -137,48 +137,48 @@ export default function QuizPage() {
       {/* 피드백 */}
       {showFeedback && lastAnswer && (
         <div style={{
-          ...glassCard,
-          background: lastAnswer.isCorrect ? 'rgba(200,240,200,0.5)' : 'rgba(246,188,186,0.4)',
-          border: lastAnswer.isCorrect ? '1.5px solid rgba(150,220,150,0.6)' : '1.5px solid rgba(246,188,186,0.7)',
+          ...card,
+          background: lastAnswer.isCorrect ? 'rgba(200,240,200,0.42)' : 'rgba(246,188,186,0.38)',
+          border: lastAnswer.isCorrect ? '1.5px solid rgba(150,220,150,0.55)' : '1.5px solid rgba(246,188,186,0.65)',
         }}>
-          <div style={{ textAlign: 'center', marginBottom: '14px' }}>
-            <span style={{ fontSize: '28px' }}>{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
-            <p style={{ margin: '6px 0 0', fontWeight: 800, fontSize: '18px', color: '#2d1b4e' }}>
+          <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+            <span style={{ fontSize: '26px' }}>{lastAnswer.isCorrect ? '🎉' : '😅'}</span>
+            <p style={{ margin: '5px 0 0', fontWeight: 800, fontSize: '17px', color: lastAnswer.isCorrect ? '#2d6e2d' : '#a03030' }}>
               {lastAnswer.isCorrect ? '정답!' : '오답'}
             </p>
           </div>
 
           <div style={{
-            background: 'rgba(255,255,255,0.5)', borderRadius: '14px', padding: '14px',
-            fontSize: '13px', color: '#4a3060', lineHeight: 1.7, textAlign: 'left',
+            background: 'rgba(255,255,255,0.55)', borderRadius: '13px', padding: '13px',
+            fontSize: '13px', color: '#6b4fa0', lineHeight: 1.75, textAlign: 'left',
           }}>
-            <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: '11px', color: '#9b8ab0', letterSpacing: '0.5px' }}>📖 해설</p>
+            <p style={{ margin: '0 0 5px', fontWeight: 700, fontSize: '11px', color: '#b0a0c8', letterSpacing: '0.5px' }}>📖 해설</p>
             {currentQuestion.explanation}
           </div>
 
           {!lastAnswer.isCorrect && !isSimilarMode && (
-            <div style={{ display: 'flex', gap: '10px', marginTop: '14px' }}>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
               <button onClick={handleSimilar} disabled={loadingSimilar} style={{
-                flex: 1, padding: '13px', borderRadius: '14px',
-                background: loadingSimilar ? 'rgba(255,255,255,0.3)' : 'rgba(255,220,100,0.5)',
-                border: '1.5px solid rgba(255,200,50,0.6)',
-                color: '#7a5000', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                flex: 1, padding: '12px', borderRadius: '13px',
+                background: loadingSimilar ? 'rgba(255,255,255,0.3)' : 'rgba(255,220,100,0.4)',
+                border: '1.5px solid rgba(230,190,50,0.55)',
+                color: '#7a5a00', fontWeight: 700, fontSize: '13px', cursor: loadingSimilar ? 'not-allowed' : 'pointer',
               }}>{loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}</button>
               <button onClick={() => exitSimilarMode()} style={{
-                flex: 1, padding: '13px', borderRadius: '14px',
-                background: 'rgba(255,255,255,0.4)', border: '1.5px solid rgba(200,168,233,0.4)',
-                color: '#7a6090', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                flex: 1, padding: '12px', borderRadius: '13px',
+                background: 'rgba(255,255,255,0.45)', border: '1.5px solid rgba(200,168,233,0.4)',
+                color: '#9b8ab0', fontWeight: 700, fontSize: '13px', cursor: 'pointer',
               }}>⏭ 패스</button>
             </div>
           )}
 
           {(lastAnswer.isCorrect || isSimilarMode) && (
             <button onClick={nextQuestion} style={{
-              width: '100%', padding: '14px', marginTop: '14px', borderRadius: '14px',
-              background: 'linear-gradient(135deg, #C8A8E9, #C3C7F4)',
+              width: '100%', padding: '14px', marginTop: '12px', borderRadius: '13px',
+              background: 'linear-gradient(135deg, #c8a8e9, #b8b4f0)',
               border: '1.5px solid rgba(255,255,255,0.7)',
-              color: '#fff', fontWeight: 800, fontSize: '15px', cursor: 'pointer',
-              boxShadow: '0 4px 16px rgba(200,168,233,0.4)',
+              color: '#fff', fontWeight: 800, fontSize: '14px', cursor: 'pointer',
+              boxShadow: '0 4px 14px rgba(200,168,233,0.35)',
             }}>
               {currentIndex + 1 >= questions.length && !isSimilarMode ? '결과 보기 →' : '다음 문제 →'}
             </button>
