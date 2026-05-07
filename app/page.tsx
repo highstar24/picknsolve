@@ -97,13 +97,19 @@ export default function HomePage() {
       }}>
         <h1 style={{
           fontSize: '23px', fontWeight: 900, margin: '0 0 6px',
-          background: 'linear-gradient(135deg, #00d4ff 0%, #ff3fa0 55%, #ffb800 100%)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          color: '#fff',
           letterSpacing: '-0.5px',
+          textShadow: '0 2px 12px rgba(0,0,0,0.2)',
         }}>
           내 자료로 퀴즈 만들기
         </h1>
-        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', margin: '0 0 14px' }}>
+        {/* 레인보우 언더라인 */}
+        <div style={{
+          width: '80px', height: '3px', margin: '0 auto 10px',
+          background: 'linear-gradient(90deg, #00d4ff, #ff3fa0, #ffb800)',
+          borderRadius: '100px',
+        }} />
+        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.85)', margin: '0 0 14px', fontWeight: 500 }}>
           텍스트 이미지 PDF를 올리면 문제가 생성돼요
         </p>
         <div style={{
