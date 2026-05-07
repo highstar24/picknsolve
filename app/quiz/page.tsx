@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
 import { T } from '@/lib/i18n'
+import { playCorrect, playWrong } from '@/lib/sounds'
 import type { QuizQuestion } from '@/types'
 
 const card: React.CSSProperties = {
@@ -44,6 +45,9 @@ export default function QuizPage() {
     if (showFeedback) return
     setSelectedLabel(label)
     submitAnswer(label)
+    const isCorrect = label === currentQuestion.correctLabel
+    if (isCorrect) playCorrect()
+    else playWrong()
   }
 
   const similarAlreadyUsed = usedSimilarIndices.has(currentIndex)
