@@ -2,7 +2,7 @@ export type UiLang = 'KR' | 'EN' | 'ZH'
 export type QuizLangMode = 'source' | 'translate'
 
 export const LANG_LABELS: Record<UiLang, string> = {
-  KR: 'KR',
+  KR: '한국어',
   EN: 'EN',
   ZH: '中文',
 }
