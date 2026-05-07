@@ -15,6 +15,8 @@ interface QuizStore {
   showFeedback: boolean
   similarQuestion: QuizQuestion | null
   isSimilarMode: boolean
+  /** 유사 문제를 이미 생성한 원본 문제 인덱스 집합 */
+  usedSimilarIndices: Set<number>
 
   // 액션
   setSession: (questions: QuizQuestion[], config: QuizConfig, sourceText: string, fileBase64?: string, fileType?: string) => void
@@ -23,6 +25,8 @@ interface QuizStore {
   setSimilarQuestion: (q: QuizQuestion | null) => void
   enterSimilarMode: () => void
   exitSimilarMode: () => void
+  /** 현재 문제 인덱스를 유사 문제 사용 완료로 표시 */
+  markSimilarUsed: () => void
   reset: () => void
 }
 
@@ -39,9 +43,10 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   showFeedback: false,
   similarQuestion: null,
   isSimilarMode: false,
+  usedSimilarIndices: new Set<number>(),
 
   setSession: (questions, config, sourceText, fileBase64 = '', fileType = '') =>
-    set({ questions, config, sourceText, fileBase64, fileType, currentIndex: 0, answers: [], showFeedback: false }),
+    set({ questions, config, sourceText, fileBase64, fileType, currentIndex: 0, answers: [], showFeedback: false, usedSimilarIndices: new Set<number>() }),
 
   submitAnswer: (selectedLabel) => {
     const { questions, currentIndex, answers, isSimilarMode, similarQuestion } = get()
@@ -73,6 +78,13 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
 
   enterSimilarMode: () => set({ isSimilarMode: true, showFeedback: false }),
 
+  markSimilarUsed: () => {
+    const { currentIndex, usedSimilarIndices } = get()
+    const next = new Set(usedSimilarIndices)
+    next.add(currentIndex)
+    set({ usedSimilarIndices: next })
+  },
+
   exitSimilarMode: () => {
     const { currentIndex } = get()
     set({ isSimilarMode: false, similarQuestion: null, showFeedback: false, currentIndex: currentIndex + 1 })
@@ -90,5 +102,6 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       showFeedback: false,
       similarQuestion: null,
       isSimilarMode: false,
+      usedSimilarIndices: new Set<number>(),
     }),
 }))

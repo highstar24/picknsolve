@@ -18,8 +18,9 @@ export default function QuizPage() {
   const {
     questions, currentIndex, answers, showFeedback,
     similarQuestion, isSimilarMode, config, sourceText,
-    fileBase64, fileType, submitAnswer, nextQuestion,
-    setSimilarQuestion, enterSimilarMode, exitSimilarMode,
+    fileBase64, fileType, usedSimilarIndices,
+    submitAnswer, nextQuestion,
+    setSimilarQuestion, enterSimilarMode, exitSimilarMode, markSimilarUsed,
   } = useQuizStore()
 
   const [loadingSimilar, setLoadingSimilar] = useState(false)
@@ -43,6 +44,8 @@ export default function QuizPage() {
     submitAnswer(label)
   }
 
+  const similarAlreadyUsed = usedSimilarIndices.has(currentIndex)
+
   async function handleSimilar() {
     setLoadingSimilar(true)
     try {
@@ -51,6 +54,7 @@ export default function QuizPage() {
       const res = await fetch('/api/similar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error)
+      markSimilarUsed()
       setSimilarQuestion(data.question)
       enterSimilarMode()
     } catch { alert('유사 문제 생성에 실패했습니다.') }
@@ -169,15 +173,26 @@ export default function QuizPage() {
 
           {!lastAnswer.isCorrect && !isSimilarMode && (
             <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
-              <button onClick={handleSimilar} disabled={loadingSimilar} style={{
-                flex: 1, padding: '12px', borderRadius: '12px',
-                background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #f59e0b, #f97316)',
-                border: 'none',
-                color: '#fff', fontWeight: 700, fontSize: '13px',
-                cursor: loadingSimilar ? 'not-allowed' : 'pointer',
-                boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(249,115,22,0.35)',
-                transition: 'all 0.2s',
-              }}>{loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}</button>
+              {similarAlreadyUsed ? (
+                <div style={{
+                  flex: 1, padding: '12px', borderRadius: '12px',
+                  background: '#fafafa', border: '1.5px solid #f3e8ff',
+                  color: '#c084fc', fontWeight: 600, fontSize: '13px',
+                  textAlign: 'center',
+                }}>
+                  ✅ 유사 문제 완료
+                </div>
+              ) : (
+                <button onClick={handleSimilar} disabled={loadingSimilar} style={{
+                  flex: 1, padding: '12px', borderRadius: '12px',
+                  background: loadingSimilar ? '#f9fafb' : 'linear-gradient(135deg, #f59e0b, #f97316)',
+                  border: 'none',
+                  color: '#fff', fontWeight: 700, fontSize: '13px',
+                  cursor: loadingSimilar ? 'not-allowed' : 'pointer',
+                  boxShadow: loadingSimilar ? 'none' : '0 4px 12px rgba(249,115,22,0.35)',
+                  transition: 'all 0.2s',
+                }}>{loadingSimilar ? '생성 중...' : '🔄 유사 문제 풀기'}</button>
+              )}
               <button onClick={() => exitSimilarMode()} style={{
                 flex: 1, padding: '12px', borderRadius: '12px',
                 background: '#fdf8ff', border: '1.5px solid #e9d5ff',
