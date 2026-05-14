@@ -61,9 +61,18 @@ export async function POST(req: NextRequest) {
     const raw = result.response.text().trim()
     const parsed = extractJson(raw)
 
+    if (!parsed) {
+      return NextResponse.json({ error: '학습 자료가 너무 짧거나 문제를 만들기 어려운 내용입니다. 더 구체적인 내용을 입력해 주세요.' }, { status: 400 })
+    }
+
     if (isSimilar) {
       return NextResponse.json({ question: parsed })
     }
+
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return NextResponse.json({ error: '학습 자료가 너무 짧거나 문제를 만들기 어려운 내용입니다. 더 구체적인 내용을 입력해 주세요.' }, { status: 400 })
+    }
+
     return NextResponse.json({ questions: parsed })
   } catch (err) {
     console.error('[generate] error:', err)
@@ -154,5 +163,5 @@ function extractJson(raw: string): unknown {
     try { return JSON.parse(objMatch[0]) } catch { /* continue */ }
   }
   // 원문 그대로 시도
-  return JSON.parse(raw)
+  try { return JSON.parse(raw) } catch { return null }
 }
