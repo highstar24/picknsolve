@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useQuizStore } from '@/store/quizStore'
 import { validateFile } from '@/lib/extractText'
@@ -36,8 +36,9 @@ export default function HomePage() {
   const [count, setCount] = useState(5)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  const remaining = getRemainingCount()
+  // 서버/클라이언트 hydration 불일치 방지: localStorage는 마운트 후에만 읽기
+  const [remaining, setRemaining] = useState(LIMIT)
+  useEffect(() => { setRemaining(getRemainingCount()) }, [])
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0]
