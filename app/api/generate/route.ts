@@ -86,7 +86,7 @@ function buildQuizPrompt(difficulty: Difficulty, count: number, mode: QuizLangMo
 
 규칙:
 1. 반드시 JSON 배열 형식으로만 응답 (다른 텍스트 없이)
-2. 보기는 A~E 5개, 정답은 correctLabel에 'A'~'E' 중 하나
+2. 보기는 1~5 숫자 5개, 정답은 correctLabel에 '1'~'5' 중 하나
 3. explanation은 정답 근거 + 오답 이유를 난이도에 맞게 설명
 ${buildLangRule(mode, uiLang)}
 
@@ -96,13 +96,13 @@ ${buildLangRule(mode, uiLang)}
     "id": 1,
     "question": "문제 내용",
     "options": [
-      {"label": "A", "text": "보기1"},
-      {"label": "B", "text": "보기2"},
-      {"label": "C", "text": "보기3"},
-      {"label": "D", "text": "보기4"},
-      {"label": "E", "text": "보기5"}
+      {"label": "1", "text": "보기1"},
+      {"label": "2", "text": "보기2"},
+      {"label": "3", "text": "보기3"},
+      {"label": "4", "text": "보기4"},
+      {"label": "5", "text": "보기5"}
     ],
-    "correctLabel": "A",
+    "correctLabel": "1",
     "explanation": "해설 내용"
   }
 ]`
@@ -124,13 +124,13 @@ ${langRule}
   "id": 999,
   "question": "문제 내용",
   "options": [
-    {"label": "A", "text": "보기1"},
-    {"label": "B", "text": "보기2"},
-    {"label": "C", "text": "보기3"},
-    {"label": "D", "text": "보기4"},
-    {"label": "E", "text": "보기5"}
+    {"label": "1", "text": "보기1"},
+    {"label": "2", "text": "보기2"},
+    {"label": "3", "text": "보기3"},
+    {"label": "4", "text": "보기4"},
+    {"label": "5", "text": "보기5"}
   ],
-  "correctLabel": "A",
+  "correctLabel": "1",
   "explanation": "해설 내용"
 }
 
@@ -139,7 +139,20 @@ ${sourceText.slice(0, 2000)}`
 }
 
 function extractJson(raw: string): unknown {
-  const jsonMatch = raw.match(/```json\s*([\s\S]*?)\s*```/) || raw.match(/([\[{][\s\S]*[\]}])/)
-  const jsonStr = jsonMatch ? (jsonMatch[1] ?? jsonMatch[0]) : raw
-  return JSON.parse(jsonStr)
+  // 코드블록 안의 JSON 추출
+  const codeBlock = raw.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+  if (codeBlock?.[1]) {
+    try { return JSON.parse(codeBlock[1]) } catch { /* continue */ }
+  }
+  // 배열 또는 객체 추출
+  const arrMatch = raw.match(/\[[\s\S]*\]/)
+  if (arrMatch) {
+    try { return JSON.parse(arrMatch[0]) } catch { /* continue */ }
+  }
+  const objMatch = raw.match(/\{[\s\S]*\}/)
+  if (objMatch) {
+    try { return JSON.parse(objMatch[0]) } catch { /* continue */ }
+  }
+  // 원문 그대로 시도
+  return JSON.parse(raw)
 }
