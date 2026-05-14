@@ -36,8 +36,10 @@ export default function QuizPage() {
   useEffect(() => { if (isFinished) router.push('/result') }, [isFinished, router])
 
   if (questions.length === 0) return null
+  if (isFinished) return null  // 결과 페이지 이동 전 빈 렌더 방지
 
-  const currentQuestion: QuizQuestion = isSimilarMode && similarQuestion ? similarQuestion : questions[currentIndex]
+  const currentQuestion: QuizQuestion | undefined = isSimilarMode && similarQuestion ? similarQuestion : questions[currentIndex]
+  if (!currentQuestion) return null  // currentQuestion undefined 방어
   const lastAnswer = answers[answers.length - 1]
   const progress = Math.round((currentIndex / questions.length) * 100)
 
