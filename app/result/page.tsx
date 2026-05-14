@@ -34,10 +34,9 @@ export default function ResultPage() {
     if (questions.length === 0) router.replace('/')
   }, [questions.length, router])
 
-  // 축하 오버레이 2.5초 후 자동 닫힘
   useEffect(() => {
     if (questions.length === 0) return
-    const timer = setTimeout(() => setShowCelebration(false), 2500)
+    const timer = setTimeout(() => setShowCelebration(false), 3000)
     return () => clearTimeout(timer)
   }, [questions.length])
 
@@ -45,13 +44,13 @@ export default function ResultPage() {
 
   const mainAnswers = answers.filter((a) => a.questionId !== 999)
   const correctCount = mainAnswers.filter((a) => a.isCorrect).length
-  const score = Math.round((correctCount / questions.length) * 100)
+  const total = questions.length
+  const score = total > 0 ? Math.round((correctCount / total) * 100) : 0
   const confIdx = SCORE_CONFIG.findIndex((s) => score >= s.min)
-  const conf = confIdx >= 0 ? SCORE_CONFIG[confIdx] : SCORE_CONFIG[SCORE_CONFIG.length - 1]
-  const confLabel = confIdx >= 0
-    ? (t.resultTitles[confIdx] ?? t.resultTitles[t.resultTitles.length - 1])
-    : t.resultTitles[t.resultTitles.length - 1]
-  const diffLabel = t.diffLabels[config.difficulty] ?? config.difficulty
+  const conf = SCORE_CONFIG[confIdx >= 0 ? confIdx : SCORE_CONFIG.length - 1]
+  const confLabel = t.resultTitles[confIdx >= 0 ? confIdx : t.resultTitles.length - 1] ?? t.resultTitles[t.resultTitles.length - 1]
+  const difficulty = config?.difficulty ?? 'normal'
+  const diffLabel = t.diffLabels[difficulty] ?? difficulty
 
   return (
     <>
@@ -66,38 +65,55 @@ export default function ResultPage() {
             position: 'fixed', inset: 0, zIndex: 1000,
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(220,62,38,0.55)',
-            backdropFilter: 'blur(6px)',
+            background: 'rgba(220,62,38,0.6)',
+            backdropFilter: 'blur(8px)',
             cursor: 'pointer',
             animation: 'fadeIn 0.4s ease',
           }}
         >
-          <div style={{ fontSize: '64px', marginBottom: '16px', animation: 'bounce 0.6s ease infinite alternate' }}>
+          <div style={{ fontSize: '72px', marginBottom: '20px', animation: 'bounce 0.6s ease infinite alternate' }}>
             🎊
           </div>
-          <p style={{
-            fontSize: '28px', fontWeight: 900, color: '#fff',
-            textAlign: 'center', lineHeight: 1.5,
-            textShadow: '0 2px 20px rgba(0,0,0,0.3)',
-            letterSpacing: '-0.5px',
+
+          {/* 점수 뱃지 */}
+          <div style={{
+            background: 'rgba(255,255,255,0.25)',
+            border: '2px solid rgba(255,255,255,0.5)',
+            borderRadius: '100px', padding: '8px 28px',
+            marginBottom: '20px',
           }}>
-            오늘도 한걸음<br />
+            <span style={{ fontSize: '32px', fontWeight: 900, color: '#fff', letterSpacing: '-1px' }}>
+              {correctCount}
+            </span>
+            <span style={{ fontSize: '20px', fontWeight: 700, color: 'rgba(255,255,255,0.8)' }}>
+              /{total}
+            </span>
+          </div>
+
+          <p style={{
+            fontSize: '26px', fontWeight: 900, color: '#fff',
+            textAlign: 'center', lineHeight: 1.6,
+            textShadow: '0 2px 20px rgba(0,0,0,0.2)',
+            letterSpacing: '-0.3px',
+            margin: 0,
+          }}>
+            {t.celebLine1}<br />
             <span style={{
-              background: 'linear-gradient(135deg, #DC3E26, #EDCD44, #EDCD44)',
+              background: 'linear-gradient(135deg, #fff, #EDCD44)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>
-              성장하셨습니다
+              {t.celebLine2}
             </span>
           </p>
-          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginTop: '24px' }}>
-            탭하면 결과 보기
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.55)', marginTop: '28px' }}>
+            {t.tapToContinue}
           </p>
         </div>
       )}
 
       <style>{`
         @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-        @keyframes bounce { from { transform: translateY(0) } to { transform: translateY(-12px) } }
+        @keyframes bounce { from { transform: translateY(0) } to { transform: translateY(-14px) } }
       `}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -113,39 +129,32 @@ export default function ResultPage() {
           overflow: 'hidden',
           boxShadow: `0 8px 32px ${conf.from}55`,
         }}>
-          <div style={{
-            position: 'absolute', top: '-30px', right: '-20px', width: '130px', height: '130px',
-            background: 'rgba(255,255,255,0.12)',
-            borderRadius: '55% 45% 50% 50% / 45% 60% 40% 55%',
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '-20px', left: '-10px', width: '90px', height: '90px',
-            background: 'rgba(255,255,255,0.08)',
-            borderRadius: '50% 60% 40% 55% / 60% 40% 60% 40%',
-          }} />
+          <div style={{ position: 'absolute', top: '-30px', right: '-20px', width: '130px', height: '130px', background: 'rgba(255,255,255,0.12)', borderRadius: '55% 45% 50% 50% / 45% 60% 40% 55%' }} />
+          <div style={{ position: 'absolute', bottom: '-20px', left: '-10px', width: '90px', height: '90px', background: 'rgba(255,255,255,0.08)', borderRadius: '50% 60% 40% 55% / 60% 40% 60% 40%' }} />
 
-          <div style={{ fontSize: '46px', position: 'relative' }}>{conf.emoji}</div>
-          <div style={{
-            fontSize: '68px', fontWeight: 900, color: '#fff',
-            letterSpacing: '-3px', lineHeight: 1, marginTop: '6px', position: 'relative',
-            textShadow: '0 2px 12px rgba(0,0,0,0.15)',
-          }}>
-            {score}<span style={{ fontSize: '22px', fontWeight: 700, opacity: 0.85 }}>{t.scoreUnit}</span>
+          <div style={{ fontSize: '44px', position: 'relative' }}>{conf.emoji}</div>
+
+          {/* X/Y 큰 표시 */}
+          <div style={{ position: 'relative', marginTop: '8px', lineHeight: 1 }}>
+            <span style={{ fontSize: '72px', fontWeight: 900, color: '#fff', letterSpacing: '-3px', textShadow: '0 2px 12px rgba(0,0,0,0.15)' }}>
+              {correctCount}
+            </span>
+            <span style={{ fontSize: '32px', fontWeight: 700, color: 'rgba(255,255,255,0.75)' }}>
+              /{total}
+            </span>
           </div>
-          <p style={{ fontWeight: 900, fontSize: '18px', color: '#fff', margin: '6px 0 20px', position: 'relative', textShadow: '0 1px 6px rgba(0,0,0,0.1)' }}>
+
+          <p style={{ fontWeight: 900, fontSize: '17px', color: '#fff', margin: '6px 0 20px', position: 'relative', textShadow: '0 1px 6px rgba(0,0,0,0.1)' }}>
             {confLabel}
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', position: 'relative' }}>
             {[
               { label: t.statCorrect, value: correctCount },
-              { label: t.statWrong, value: questions.length - correctCount },
+              { label: t.statWrong, value: total - correctCount },
               { label: t.statDiff, value: diffLabel },
             ].map((item) => (
-              <div key={item.label} style={{
-                background: 'rgba(255,255,255,0.22)',
-                borderRadius: '13px', padding: '9px 14px', textAlign: 'center',
-              }}>
+              <div key={item.label} style={{ background: 'rgba(255,255,255,0.22)', borderRadius: '13px', padding: '9px 14px', textAlign: 'center' }}>
                 <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff', textShadow: '0 1px 4px rgba(0,0,0,0.1)' }}>{item.value}</div>
                 <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.75)', marginTop: '2px' }}>{item.label}</div>
               </div>
@@ -156,7 +165,7 @@ export default function ResultPage() {
         {/* 문제별 결과 */}
         <h2 style={{
           margin: '4px 0', fontWeight: 800, fontSize: '14px', textAlign: 'center',
-          color: 'rgba(255,255,255,0.85)',
+          color: '#DC3E26',
         }}>{t.reviewTitle}</h2>
 
         {questions.map((q, i) => {
@@ -179,8 +188,8 @@ export default function ResultPage() {
                   color: isCorrect ? '#065f46' : '#be123c', fontWeight: 800,
                 }}>{isCorrect ? '✓' : '✗'}</span>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: '0 0 7px', fontSize: '13px', fontWeight: 600, color: '#0d2233', lineHeight: 1.5 }}>
-                    <span style={{ color: '#c084fc', marginRight: '3px' }}>Q{i + 1}.</span>{q.question}
+                  <p style={{ margin: '0 0 7px', fontSize: '13px', fontWeight: 600, color: '#1a1a1a', lineHeight: 1.5 }}>
+                    <span style={{ color: '#DC3E26', marginRight: '3px' }}>Q{i + 1}.</span>{q.question}
                   </p>
                   {!isCorrect && (
                     <div style={{ fontSize: '12px', marginBottom: '7px' }}>
@@ -190,7 +199,7 @@ export default function ResultPage() {
                   )}
                   <details style={{ fontSize: '12px' }}>
                     <summary style={{ cursor: 'pointer', color: '#0a7fa0', fontWeight: 600, userSelect: 'none' }}>{t.showExplanation}</summary>
-                    <p style={{ margin: '7px 0 0', color: '#0d3d52', lineHeight: 1.75, paddingLeft: '10px', borderLeft: '3px solid #b8e0e8' }}>
+                    <p style={{ margin: '7px 0 0', color: '#333', lineHeight: 1.75, paddingLeft: '10px', borderLeft: '3px solid #b8e0e8' }}>
                       {q.explanation}
                     </p>
                   </details>
@@ -206,7 +215,7 @@ export default function ResultPage() {
           border: 'none',
           borderRadius: '16px', color: '#fff', fontWeight: 900,
           fontSize: '16px', cursor: 'pointer',
-          boxShadow: '0 8px 24px rgba(220,62,38,0.45)',
+          boxShadow: '0 8px 24px rgba(220,62,38,0.4)',
           textShadow: '0 1px 4px rgba(0,0,0,0.1)',
         }}>
           {t.retryBtn}

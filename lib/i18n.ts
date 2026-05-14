@@ -53,6 +53,10 @@ export const T = {
     showExplanation: '해설 보기',
     retryBtn: '🔁 새 퀴즈 만들기',
     notSelected: '미선택',
+    celebLine1: '오늘도 함께한 당신!',
+    celebLine2: '멋집니다',
+    tapToContinue: '탭하면 결과 보기',
+    scoreCorrect: '맞힌 문제',
   },
   EN: {
     appSubtitle: 'AI Quiz',
@@ -99,6 +103,10 @@ export const T = {
     showExplanation: 'Show explanation',
     retryBtn: '🔁 New Quiz',
     notSelected: 'Not selected',
+    celebLine1: 'You studied today!',
+    celebLine2: 'Well done 👏',
+    tapToContinue: 'Tap to see results',
+    scoreCorrect: 'Correct',
   },
   ZH: {
     appSubtitle: 'AI 测验',
@@ -145,6 +153,10 @@ export const T = {
     showExplanation: '查看解析',
     retryBtn: '🔁 新测验',
     notSelected: '未选择',
+    celebLine1: '今天也坚持了的你',
+    celebLine2: '辛苦了，真棒！',
+    tapToContinue: '点击查看结果',
+    scoreCorrect: '答对',
   },
 } as const satisfies Record<UiLang, object>
 
