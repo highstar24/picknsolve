@@ -28,18 +28,24 @@ export default function ResultPage() {
   const { questions, answers, config, reset, uiLang } = useQuizStore()
   const t = T[uiLang] ?? T['KR']
 
+  const [mounted, setMounted] = useState(false)
   const [showCelebration, setShowCelebration] = useState(true)
 
-  useEffect(() => {
-    if (questions.length === 0) router.replace('/')
-  }, [questions.length, router])
+  // 서버/클라이언트 hydration 불일치 방지 — 마운트 후에만 렌더
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
-    if (questions.length === 0) return
+    if (!mounted) return
+    if (questions.length === 0) router.replace('/')
+  }, [mounted, questions.length, router])
+
+  useEffect(() => {
+    if (!mounted || questions.length === 0) return
     const timer = setTimeout(() => setShowCelebration(false), 3000)
     return () => clearTimeout(timer)
-  }, [questions.length])
+  }, [mounted, questions.length])
 
+  if (!mounted) return null
   if (questions.length === 0) return null
 
   const mainAnswers = answers.filter((a) => a.questionId !== 999)
